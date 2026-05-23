@@ -1,6 +1,6 @@
 services:
   mysql:
-    image: mysql:9
+    image: mysql:lts
     container_name: mysql-db
     restart: unless-stopped
     environment:
