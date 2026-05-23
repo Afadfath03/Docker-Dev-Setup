@@ -1,0 +1,34 @@
+ports:
+  dns: 53
+  http: 4000
+
+upstream:
+  default:
+    - 1.1.1.1
+    - 1.0.0.1
+    - 8.8.8.8
+    - 8.8.4.4
+    - 9.9.9.9
+    - 149.112.112.112
+
+blocking:
+  blacklist:
+    - https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts
+    - https://big.oisd.nl
+    - https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/wildcard/pro.txt
+  whitelist: []
+  blockingMode: nxDomain
+
+caching:
+  enabled: true
+  minTime: 300
+  maxTime: 3600
+
+logging:
+  logQueries: false
+  verbosity: 0
+
+dns:
+  listenAddress: 0.0.0.0
+  udp: true
+  tcp: true
