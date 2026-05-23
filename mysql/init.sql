@@ -1,0 +1,11 @@
+CREATE DATABASE IF NOT EXISTS app;
+
+USE app;
+
+CREATE TABLE IF NOT EXISTS dummy (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    description VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO dummy (description) VALUES ('test entry');
