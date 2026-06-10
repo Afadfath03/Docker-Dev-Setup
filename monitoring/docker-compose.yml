@@ -34,10 +34,10 @@ services:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=changeme123
+      - GF_SECURITY_ADMIN_USER=afadfath
+      - GF_SECURITY_ADMIN_PASSWORD=Neo@fadFath03
       - GF_USERS_ALLOW_SIGN_UP=false
-      - GF_SERVER_DOMAIN=grafana.yourdomain.com
+      - GF_SERVER_DOMAIN=grafana.afadfath.net
       - GF_ANALYTICS_REPORTING_ENABLED=false
     restart: unless-stopped
     networks:
