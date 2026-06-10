@@ -5,9 +5,3 @@ services:
     restart: unless-stopped
     ports:
       - "8082:80"
-    networks:
-      - proxy
-
-networks:
-  proxy:
-    external: true
