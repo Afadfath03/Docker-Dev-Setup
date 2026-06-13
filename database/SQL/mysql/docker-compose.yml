@@ -11,7 +11,6 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-    shm_size: 256mb
     deploy:
       resources:
         limits:
@@ -19,8 +18,8 @@ services:
         reservations:
           memory: 512M
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -u root -q"]
-      interval: 10m
+      test: ["CMD-SHELL", "mysqladmin ping -u root -p$$MYSQL_ROOT_PASSWORD -q"]
+      interval: 1m
       timeout: 5s
       retries: 3
       start_period: 10s
