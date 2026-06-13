@@ -9,7 +9,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql
+      - postgres-data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     shm_size: 256mb
     deploy:
@@ -20,7 +20,7 @@ services:
           memory: 512M
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d postgres -q"]
-      interval: 10m
+      interval: 1m
       timeout: 5s
       retries: 3
       start_period: 10s
