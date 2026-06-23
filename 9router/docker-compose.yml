@@ -15,6 +15,7 @@ services:
       - "${PORT:-20128}:${PORT:-20128}"
 
     volumes:
+      - "${HOME}:/home/user"
       - 9router-data:/app/data
       - 9router-usage:/app/data-home
 
