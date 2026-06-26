@@ -51,9 +51,8 @@ cap_add:
 ```
 
 - `.env` files are gitignored (root `.gitignore` covers all subdirectories)
-- PostgreSQL and MySQL bind to `127.0.0.1` only
+- PostgreSQL binds to `127.0.0.1` only
 - Resource limits via `deploy.resources.limits.memory`
-- Docker socket access via [docker-socket-proxy](https://github.com/Tecnativa/docker-socket-proxy), never direct mount
 
 ### Logging
 
@@ -106,7 +105,7 @@ Push to `main` → GitHub Actions auto-deploys to VPS via SSH.
 | 53 | blocky_dns | DNS (UDP/TCP) |
 | 80, 443 | nginx-proxy-manager | HTTP/HTTPS proxy |
 | 81 | nginx-proxy-manager | Admin UI |
-| 3306 | MySQL | Database (localhost) |
+| 3306 | MySQL | Database |
 | 5432 | PostgreSQL | Database (localhost) |
 | 4000 | Blocky | HTTP API |
 | 8000 | Portainer | Tunnel |
@@ -118,5 +117,3 @@ Push to `main` → GitHub Actions auto-deploys to VPS via SSH.
 | 9443 | Portainer | HTTPS UI |
 | 3001 | Grafana | Dashboard |
 | 20128 | 9Router | AI routing |
-| — | docker-socket-proxy | 2375 internal, no host port |
-| — | watchtower | No exposed port |

@@ -15,13 +15,11 @@ Modular Docker services for development server / VPS.
 | [9router](./9router) | `20128` | AI routing gateway & token saver |
 | [blocky_dns](./blocky_dns) | `53`, `4000` | DNS ad/tracker blocker |
 | [database](./database) | `3306`, `5432`, `8978` | MySQL, PostgreSQL, CloudBeaver |
-| [docker-socket-proxy](./docker-socket-proxy) | — | Secure Docker socket proxy |
 | [it-tools](./it-tools) | `8082` | IT utilities (web) |
 | [monitoring](./monitoring) | `9090`, `3001`, `9100`, `8081` | Prometheus + Grafana + cAdvisor |
 | [nginx-proxy-manager](./nginx-proxy-manager) | `80`, `81`, `443` | Reverse proxy with web UI |
 | [portainer](./portainer) | `9443`, `8000` | Container management UI |
 | [searxng](./searxng) | `8443` | Private meta-search engine |
-| [watchtower](./watchtower) | — | Auto-update containers |
 
 ## Access
 
@@ -77,8 +75,7 @@ docker compose pull && docker compose up -d
 
 - **Firewall**: use `ufw` or `iptables`, only open ports 80, 443, and 22 (SSH)
 - **Reverse Proxy**: use NPM to terminate HTTPS via Let's Encrypt, access services via domain, not IP:port
-- **Database**: PostgreSQL & MySQL bind `127.0.0.1` only; change default password `admin123` for production
-- **Docker Socket**: Portainer uses [docker-socket-proxy](./docker-socket-proxy) instead of direct Docker socket mount — fine-grained API permissions, no full root
+- **Database**: PostgreSQL binds `127.0.0.1` only; change MySQL default password `admin123` for production
 - **Blocky**: port 53 must be open in the firewall for DNS to work
 - **Secrets**: never commit `.env` — already in `.gitignore`
 

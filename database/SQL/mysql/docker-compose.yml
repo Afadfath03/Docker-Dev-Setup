@@ -4,12 +4,10 @@ services:
     container_name: mysql-db
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-admin123}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-app}
-    env_file:
-      - .env
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_DATABASE: app
     ports:
-      - "127.0.0.1:3306:3306"
+      - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
