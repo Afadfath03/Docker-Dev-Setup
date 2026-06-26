@@ -1,0 +1,11 @@
+# SearXNG rate limiter configuration
+# See https://docs.searxng.org/admin/settings/limiter.html
+
+[botdetection.ip_limit]
+# limit per IP
+# link_token: 10 requests in 60 seconds
+link_token = "10/60s"
+# ip_limit: 10 requests in 60 seconds
+ip_limit = "10/60s"
+# ip_lists: 100 requests in 60 seconds
+ip_lists = "100/60s"

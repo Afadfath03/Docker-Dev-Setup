@@ -1,0 +1,21 @@
+use_default_settings: true
+
+general:
+  instance_name: "SearXNG"
+
+server:
+  secret_key: ""  # overridden by SEARXNG_SECRET env
+  limiter: false
+  image_proxy: true
+  public_instance: false
+
+search:
+  safe_search: 0
+
+ui:
+  static_use_hash: true
+  query_in_title: true
+
+outgoing:
+  request_timeout: 2.0
+  max_request_timeout: 10.0
