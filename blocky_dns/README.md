@@ -10,7 +10,7 @@ docker compose up -d
 
 ## Access
 
-| Port | Fungsi |
+| Port | Function |
 |---|---|
 | `53/udp+tcp` | DNS server (set as system DNS) |
 | `4000` | HTTP API / metrics |
@@ -27,4 +27,4 @@ docker compose up -d
 
 ## Security
 
-Port `53` harus buka di firewall agar DNS berfungsi.
+Port `53` must be open in the firewall for DNS to work.

@@ -1,83 +1,83 @@
 # 9Router — Docker Setup
 
-9Router adalah AI routing gateway dan token saver open-source. Bertindak sebagai proxy lokal antara AI coding CLI tools dengan 40+ provider AI, dilengkapi smart 3-tier fallback, format translation, dan kompresi token bawaan.
+9Router is an open-source AI routing gateway and token saver. Acts as a local proxy between AI coding CLI tools and 40+ AI providers, with smart 3-tier fallback, format translation, and built-in token compression.
 
 ---
 
-## Daftar Isi
+## Table of Contents
 
-- [Prasyarat](#prasyarat)
-- [Instalasi](#instalasi)
-- [Konfigurasi](#konfigurasi)
-- [Akses Dashboard](#akses-dashboard)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Dashboard Access](#dashboard-access)
 - [Data Persistence](#data-persistence)
 - [Reverse Proxy (HTTPS)](#reverse-proxy-https)
 - [Backup & Restore](#backup--restore)
 - [Update](#update)
 - [Teardown](#teardown)
-- [Tips Keamanan](#tips-keamanan)
+- [Security Tips](#security-tips)
 - [Troubleshooting](#troubleshooting)
 
 ---
 
-## Prasyarat
+## Prerequisites
 
-- **Docker** dan **Docker Compose** terinstal (minimal Docker Compose v2)
-- Port `20128` tidak dipakai aplikasi lain
+- **Docker** and **Docker Compose** installed (Docker Compose v2 minimum)
+- Port `20128` not in use
 
 ---
 
-## Instalasi
+## Installation
 
 ```bash
-# 1. Clone repository ini
+# 1. Clone this repository
 git clone <repo-url> 9router
 cd 9router
 
 # 2. Setup environment variables
 cp .env.example .env
-nano .env   # isi JWT_SECRET, INITIAL_PASSWORD, API_KEY_SECRET
+nano .env   # fill in JWT_SECRET, INITIAL_PASSWORD, API_KEY_SECRET
 
-# 3. (Opsional) Generate JWT_SECRET yang kuat
+# 3. (Optional) Generate a strong JWT_SECRET
 openssl rand -hex 64
 
-# 4. Jalankan container
+# 4. Start container
 docker compose up -d
 ```
 
-### Setup `.env`
+### `.env` Setup
 
-Copy file `.env.example` menjadi `.env`, lalu isi nilai-nilai yang wajib:
+Copy `.env.example` to `.env`, then fill in required values:
 
-| Variable | Wajib | Konsekuensi jika kosong / placeholder | Keterangan |
-|----------|-------|--------------------------------------|------------|
-| `JWT_SECRET` | ✅ | Kosong → auto-generate tiap restart (session kadaluarsa). Placeholder → secret bisa ditebak, session dibajak. | Secret untuk JWT auth cookie. Generate dengan `openssl rand -hex 64`. |
-| `INITIAL_PASSWORD` | ✅ | Kosong → app mungkin gagal startup. Placeholder → siapapun bisa login. | Password pertama kali login dashboard. Ganti setelah login. |
-| `API_KEY_SECRET` | ✅ | Kosong → HMAC key kosong, API key tidak valid. Placeholder → API key bisa dipalsukan. | HMAC secret untuk API key. Jangan pakai default. |
+| Variable | Required | Consequence if empty/placeholder | Description |
+|----------|----------|----------------------------------|-------------|
+| `JWT_SECRET` | ✅ | Empty → auto-generate on restart (session expires). Placeholder → secret guessable, session hijackable. | Secret for JWT auth cookie. Generate with `openssl rand -hex 64`. |
+| `INITIAL_PASSWORD` | ✅ | Empty → app may fail to start. Placeholder → anyone can login. | First login password. Change after login. |
+| `API_KEY_SECRET` | ✅ | Empty → empty HMAC key, API key invalid. Placeholder → API key can be forged. | HMAC secret for API key. Don't use default. |
 
-Variable lain sudah memiliki default value dan bersifat opsional.
+Other variables have default values and are optional.
 
 ---
 
-## Konfigurasi
+## Configuration
 
-### Environment Variable
+### Environment Variables
 
-| Variable | Default | Wajib | Konsekuensi jika kosong / placeholder | Keterangan |
-|----------|---------|-------|--------------------------------------|------------|
-| `JWT_SECRET` | — | ✅ | Kosong → auto-generate tiap restart (session expired). Placeholder → session bisa dibajak. | Secret untuk JWT auth cookie. Generate dengan `openssl rand -hex 64`. |
-| `INITIAL_PASSWORD` | `123456` | ✅ | Kosong → app mungkin gagal startup. Placeholder → siapapun bisa login. | Password pertama kali login dashboard. Ganti setelah login. |
-| `DATA_DIR` | `/app/data` | ✅ | Kosong → data tidak tersimpan, hilang saat restart. | Lokasi penyimpanan data di container. |
-| `PORT` | `20128` | | Kosong → port default 20128. | Port service. |
-| `HOSTNAME` | `0.0.0.0` | | Kosong → bind ke semua interface. | Bind address container. |
-| `NODE_ENV` | `development` | ✅ | Kosong → development mode (verbose log). | Set ke `production` untuk deploy. |
-| `API_KEY_SECRET` | `endpoint-proxy-api-key-secret` | ✅ | Kosong → HMAC key kosong, API key invalid. Placeholder → API key bisa dipalsukan. | HMAC secret untuk API key. Ganti dari default. |
-| `MACHINE_ID_SALT` | `endpoint-proxy-salt` | | Salt untuk hashing machine ID. |
-| `REQUIRE_API_KEY` | `false` | | Wajibkan Bearer API key di endpoint `/v1/*`. Set `true` jika publik. |
-| `AUTH_COOKIE_SECURE` | `false` | | Set `true` jika di belakang HTTPS reverse proxy. |
-| `BASE_URL` | `http://localhost:20128` | | Base URL internal untuk cloud sync. |
-| `NEXT_PUBLIC_BASE_URL` | `http://localhost:3000` | | Base URL publik (kompatibilitas). |
-| `ENABLE_REQUEST_LOGS` | `false` | | Aktifkan logging request/response. |
+| Variable | Default | Required | Consequence if empty/placeholder | Description |
+|----------|---------|----------|----------------------------------|-------------|
+| `JWT_SECRET` | — | ✅ | Empty → auto-generate on restart (session expires). Placeholder → session hijackable. | Secret for JWT auth cookie. Generate with `openssl rand -hex 64`. |
+| `INITIAL_PASSWORD` | `123456` | ✅ | Empty → app may fail to start. Placeholder → anyone can login. | First login password. Change after login. |
+| `DATA_DIR` | `/app/data` | ✅ | Empty → data not persisted, lost on restart. | Data storage location in container. |
+| `PORT` | `20128` | | Empty → default port 20128. | Service port. |
+| `HOSTNAME` | `0.0.0.0` | | Empty → bind to all interfaces. | Container bind address. |
+| `NODE_ENV` | `development` | ✅ | Empty → development mode (verbose logging). | Set to `production` for deployment. |
+| `API_KEY_SECRET` | `endpoint-proxy-api-key-secret` | ✅ | Empty → empty HMAC key, API key invalid. Placeholder → API key can be forged. | HMAC secret for API key. Change from default. |
+| `MACHINE_ID_SALT` | `endpoint-proxy-salt` | | Salt for machine ID hashing. |
+| `REQUIRE_API_KEY` | `false` | | Require Bearer API key on `/v1/*` endpoints. Set `true` if public. |
+| `AUTH_COOKIE_SECURE` | `false` | | Set `true` behind HTTPS reverse proxy. |
+| `BASE_URL` | `http://localhost:20128` | | Internal base URL for cloud sync. |
+| `NEXT_PUBLIC_BASE_URL` | `http://localhost:3000` | | Public base URL (compatibility). |
+| `ENABLE_REQUEST_LOGS` | `false` | | Enable request/response logging. |
 
 ### Generate JWT_SECRET
 
@@ -85,34 +85,34 @@ Variable lain sudah memiliki default value dan bersifat opsional.
 openssl rand -hex 64
 ```
 
-Hasilnya akan seperti: `a7f3c1e2b8d94f065a1c3e7b2d8f4a0c6e9b1d3f5a7c9e2b4d6f8a0c1e3d5b7f`
+Result will be like: `a7f3c1e2b8d94f065a1c3e7b2d8f4a0c6e9b1d3f5a7c9e2b4d6f8a0c1e3d5b7f`
 
 ---
 
-## Akses Dashboard
+## Dashboard Access
 
-| Akses | URL |
-|-------|-----|
-| Lokal | http://localhost:20128 |
-| Jaringan | http://<ip-server>:20128 |
+| Access | URL |
+|--------|-----|
+| Local | http://localhost:20128 |
+| Network | http://<server-ip>:20128 |
 
-**Login pertama:**
-- Password default: `123456` (atau sesuai `INITIAL_PASSWORD` jika diubah)
-- Tidak ada username — langsung masukkan password
-- **Ganti password** segera setelah login melalui dashboard
+**First login:**
+- Default password: `123456` (or your `INITIAL_PASSWORD`)
+- No username — enter password directly
+- **Change password** immediately after login via dashboard
 
 ---
 
 ## Data Persistence
 
-Beberapa modul internal 9router menyimpan data langsung ke direktori home container (`~/.9router`), bukan ke `DATA_DIR`. Oleh karena itu diperlukan **dua volume**:
+Some internal 9Router modules store data directly in the container home directory (`~/.9router`), not in `DATA_DIR`. This requires **two volumes**:
 
-| Volume Host | Mount Container | Fungsi |
-|-------------|----------------|--------|
-| `${HOME}/.9router` | `/app/data` | Konfigurasi, database utama, `db.json` |
-| `${HOME}/.9router-usage` | `/app/data-home` | Data pemakaian token, log, request details |
+| Host Volume | Container Mount | Function |
+|-------------|----------------|----------|
+| `${HOME}/.9router` | `/app/data` | Config, main database, `db.json` |
+| `${HOME}/.9router-usage` | `/app/data-home` | Token usage data, logs, request details |
 
-Tanpa volume kedua, data pemakaian dan log akan hilang saat container restart. Kedua direktori bisa diinspeksi langsung dari host.
+Without the second volume, usage data and logs will be lost on container restart. Both directories can be inspected from the host.
 
 ---
 
@@ -123,7 +123,7 @@ Tanpa volume kedua, data pemakaian dan log akan hilang saat container restart. K
 ```nginx
 server {
     listen 443 ssl;
-    server_name 9router.domain-anda.com;
+    server_name 9router.your-domain.com;
 
     ssl_certificate /etc/letsencrypt/live/domain/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/domain/privkey.pem;
@@ -145,19 +145,19 @@ server {
 }
 ```
 
-Jangan lupa set `AUTH_COOKIE_SECURE=true` di `.env`.
+Don't forget to set `AUTH_COOKIE_SECURE=true` in `.env`.
 
 ### Caddy
 
 ```caddy
-9router.domain-anda.com {
+9router.your-domain.com {
     reverse_proxy localhost:20128 {
         flush_interval -1
     }
 }
 ```
 
-Caddy otomatis mengurus sertifikat SSL.
+Caddy automatically handles SSL certificates.
 
 ---
 
@@ -166,7 +166,7 @@ Caddy otomatis mengurus sertifikat SSL.
 ### Backup
 
 ```bash
-# Backup semua data 9router
+# Backup all 9router data
 tar -czf 9router-backup-$(date +%Y%m%d).tar.gz \
   ~/.9router \
   ~/.9router-usage
@@ -175,13 +175,13 @@ tar -czf 9router-backup-$(date +%Y%m%d).tar.gz \
 ### Restore
 
 ```bash
-# Hentikan container
+# Stop container
 docker compose down
 
-# Restore dari backup
+# Restore from backup
 tar -xzf 9router-backup-YYYYMMDD.tar.gz -C ~/
 
-# Jalankan lagi
+# Start again
 docker compose up -d
 ```
 
@@ -194,45 +194,45 @@ docker compose pull
 docker compose up -d
 ```
 
-Container akan restart dengan image terbaru tanpa kehilangan data (tersimpan di volume).
+Container will restart with the latest image without losing data (stored in volumes).
 
 ---
 
 ## Teardown
 
 ```bash
-# Hentikan dan hapus container (data tetap aman di volume)
+# Stop and remove container (data stays in volumes)
 docker compose down
 
-# Hapus container + volume data (data akan hilang!)
+# Stop + remove container + delete volumes (data lost!)
 docker compose down -v
 
-# Hapus image
+# Remove image
 docker rmi decolua/9router:latest
 ```
 
 ---
 
-## Tips Keamanan
+## Security Tips
 
-1. **Ganti `JWT_SECRET`** — Generate dengan `openssl rand -hex 64`. Mencegah session hijack.
-2. **Ganti `API_KEY_SECRET`** — Jangan pakai default. Digunakan untuk HMAC API key.
-3. **Ganti `INITIAL_PASSWORD`** — Default `123456` sangat tidak aman.
-4. **Set `REQUIRE_API_KEY=true`** jika instance diakses dari internet.
-5. **Set `AUTH_COOKIE_SECURE=true`** jika pakai HTTPS.
-6. **Gunakan reverse proxy** (Nginx/Caddy) untuk terminasi SSL daripada mengekspos container langsung.
-7. **Gunakan `.env` file** — jangan edit variable langsung di `docker-compose.yml` agar tidak ter-commit ke git.
+1. **Change `JWT_SECRET`** — Generate with `openssl rand -hex 64`. Prevents session hijacking.
+2. **Change `API_KEY_SECRET`** — Don't use default. Used for HMAC API key signing.
+3. **Change `INITIAL_PASSWORD`** — Default `123456` is very insecure.
+4. **Set `REQUIRE_API_KEY=true`** if instance is accessed from the internet.
+5. **Set `AUTH_COOKIE_SECURE=true`** if using HTTPS.
+6. **Use a reverse proxy** (Nginx/Caddy) for SSL termination instead of exposing the container directly.
+7. **Use `.env` file** — don't edit variables directly in `docker-compose.yml` to avoid committing secrets to git.
 
 ---
 
 ## Troubleshooting
 
-| Masalah | Solusi |
-|---------|--------|
-| Lupa password | Hapus file `db.json` di `${HOME}/.9router/db.json`, restart container, login dengan `INITIAL_PASSWORD`. |
-| Data pemakaian hilang | Pastikan volume `/app/data-home` terpasang dengan benar. |
-| Dashboard tidak bisa diakses | Periksa `docker compose logs -f` untuk melihat error. |
-| API key tidak valid | Generate API key baru lewat dashboard (Settings → API Keys). |
-| Connection refused | Pastikan port `20128` tidak terhalang firewall. |
-| Permission denied volume | Pastikan direktori `~/.9router` dan `~/.9router-usage` bisa diakses user Docker. Atur dengan `chown` jika perlu. |
-| Healthcheck gagal | Pastikan container sudah benar-benar running. Cek dengan `docker compose ps` dan `docker compose logs`. |
+| Issue | Solution |
+|-------|----------|
+| Forgot password | Delete `db.json` in `${HOME}/.9router/db.json`, restart container, login with `INITIAL_PASSWORD`. |
+| Usage data lost | Make sure volume `/app/data-home` is mounted correctly. |
+| Dashboard unreachable | Check `docker compose logs -f` for errors. |
+| API key invalid | Generate new API key via dashboard (Settings → API Keys). |
+| Connection refused | Make sure port `20128` is not blocked by firewall. |
+| Volume permission denied | Ensure `~/.9router` and `~/.9router-usage` are accessible by the Docker user. Adjust with `chown` if needed. |
+| Healthcheck fails | Make sure container is fully running. Check with `docker compose ps` and `docker compose logs`. |

@@ -11,15 +11,15 @@ docker compose up -d
 
 ## Services
 
-| Service | Port | Fungsi |
+| Service | Port | Function |
 |---|---|---|
 | Prometheus | `9090` | Time-series metrics |
-| Grafana | `3001` | Dashboard & visualisasi |
+| Grafana | `3001` | Dashboard & visualization |
 | Node Exporter | `9100` | Host metrics (CPU, memory, disk) |
 | cAdvisor | `8081` | Container metrics |
 
 ## Grafana
 
-Login dari `.env` — `GF_SECURITY_ADMIN_USER` / `GF_SECURITY_ADMIN_PASSWORD`.
+Login from `.env` — `GF_SECURITY_ADMIN_USER` / `GF_SECURITY_ADMIN_PASSWORD`.
 
-Data source Prometheus auto-terkonfigurasi via provisioning.
+Prometheus data source auto-configured via provisioning.

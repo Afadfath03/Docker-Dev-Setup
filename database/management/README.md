@@ -12,7 +12,7 @@ docker compose up -d
 
 `http://<ip>:8978`
 
-Connect ke database via container name:
+Connect to database via container name:
 
 | Database | Host |
 |---|---|

@@ -3,6 +3,8 @@ services:
     image: portainer/portainer-ce:latest
     container_name: portainer
     restart: unless-stopped
+    networks:
+      - npm_network
     ports:
       - "9443:9443"
       - "8000:8000"
@@ -14,6 +16,10 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+networks:
+  npm_network:
+    external: true
 
 volumes:
   portainer-data:

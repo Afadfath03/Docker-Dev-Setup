@@ -1,6 +1,6 @@
 # IT-Tools
 
-Koleksi utility IT dalam web UI — IP calculator, UUID generator, base64, JSON formatter, dll.
+Collection of IT utilities in a web UI — IP calculator, UUID generator, base64, JSON formatter, etc.
 
 ## Run
 

@@ -16,7 +16,7 @@ docker compose up -d
 
 ## Init
 
-`init.sql` auto-jalan saat pertama kali — buat DB `app` + dummy table.
+`init.sql` auto-runs on first start — creates DB `app` + dummy table.
 
 ## Resources
 

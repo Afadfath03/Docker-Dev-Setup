@@ -1,6 +1,6 @@
 networks:
-  9router-net:
-    driver: bridge
+  npm_network:
+    external: true
 
 services:
   9router:
@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
 
     networks:
-      - 9router-net
+      - npm_network
 
     ports:
       - "${PORT:-20128}:${PORT:-20128}"

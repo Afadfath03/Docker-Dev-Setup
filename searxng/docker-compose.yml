@@ -3,6 +3,8 @@ services:
     image: redis:alpine
     container_name: searxng-redis
     restart: unless-stopped
+    networks:
+      - npm_network
     volumes:
       - redis-data:/data
     logging:
@@ -15,6 +17,8 @@ services:
     image: searxng/searxng:latest
     container_name: searxng
     restart: unless-stopped
+    networks:
+      - npm_network
     ports:
       - "${PORT:-8443}:8080"
     depends_on:
@@ -34,6 +38,10 @@ services:
       options:
         max-size: 10m
         max-file: 3
+
+networks:
+  npm_network:
+    external: true
 
 volumes:
   redis-data:

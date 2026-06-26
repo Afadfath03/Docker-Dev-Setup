@@ -1,6 +1,6 @@
 # Nginx Proxy Manager
 
-Reverse proxy dengan web UI dan dukungan Let's Encrypt SSL.
+Reverse proxy with web UI and Let's Encrypt SSL support.
 
 ## Run
 
@@ -10,7 +10,7 @@ docker compose up -d
 
 ## Access
 
-| Port | Fungsi |
+| Port | Function |
 |---|---|
 | `80` | HTTP proxy |
 | `81` | Admin UI (`http://<ip>:81`) |
@@ -29,4 +29,4 @@ Default login: `admin@example.com` / `changeme`
 
 ## Security
 
-Cukup buka port `80` dan `443` di firewall. Service lain cukup diakses lewat domain via NPM.
+Only ports `80` and `443` need to be open in the firewall. Other services are accessed through domains via NPM.

@@ -3,5 +3,11 @@ services:
     image: corentinth/it-tools:latest
     container_name: it-tools
     restart: unless-stopped
+    networks:
+      - npm_network
     ports:
       - "8082:80"
+
+networks:
+  npm_network:
+    external: true

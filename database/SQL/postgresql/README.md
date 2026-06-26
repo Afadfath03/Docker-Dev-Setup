@@ -14,11 +14,11 @@ docker compose up -d
 |---|---|---|---|
 | `localhost` | `5432` | `postgres` | `admin123` |
 
-⚠️ Binding `127.0.0.1` saja — tidak bisa diakses dari luar.
+⚠️ `127.0.0.1` binding only — not accessible from outside.
 
 ## Init
 
-`init.sql` auto-jalan saat pertama kali — buat dummy table.
+`init.sql` auto-runs on first start — creates dummy table.
 
 ## Resources
 

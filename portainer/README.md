@@ -12,4 +12,4 @@ docker compose up -d
 
 `https://<ip>:9443`
 
-Buat admin user pada first-time login.
+Create admin user on first-time login.

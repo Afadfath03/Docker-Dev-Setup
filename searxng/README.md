@@ -1,6 +1,6 @@
 # SearXNG
 
-Private meta-search engine — privacy-respecting, agregator hasil pencarian dari berbagai engine.
+Private meta-search engine — privacy-respecting, aggregates search results from multiple engines.
 
 ## Run
 
@@ -15,7 +15,7 @@ docker compose up -d
 
 ## Config
 
-| File | Fungsi |
+| File | Function |
 |---|---|
 | `.env` | `SEARXNG_BASE_URL`, `SEARXNG_SECRET` |
 | `settings.yml` | Search, UI, outgoing timeout |
