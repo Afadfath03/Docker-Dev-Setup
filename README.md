@@ -28,7 +28,7 @@ Kumpulan service Docker modular untuk development server / VPS.
 | Nginx Proxy Manager | `http://<ip>:81` | `81` | Admin UI, login default `admin@example.com` / `changeme` |
 | Portainer | `https://<ip>:9443` | `9443` | Container management |
 | 9Router | `http://<ip>:20128` | `20128` | Dashboard, login pakai `INITIAL_PASSWORD` |
-| Grafana | `http://<ip>:3001` | `3001` | Login `afadfath` |
+| Grafana | `http://<ip>:3001` | `3001` | Login sesuai `GF_SECURITY_ADMIN_USER` di `docker-compose.yml` |
 | Prometheus | `http://<ip>:9090` | `9090` | Metrics (no auth) |
 | MySQL | `<ip>:3306` | `3306` | user `root`, password `admin123` |
 | PostgreSQL | `localhost:5432` | `5432` | user `postgres`, password `admin123` |
