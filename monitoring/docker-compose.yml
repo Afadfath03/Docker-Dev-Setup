@@ -34,14 +34,14 @@ services:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
     environment:
-      - GF_SECURITY_ADMIN_USER=afadfath
-      - GF_SECURITY_ADMIN_PASSWORD=Neo@fadFath03
       - GF_USERS_ALLOW_SIGN_UP=false
-      - GF_SERVER_DOMAIN=grafana.afadfath.net
       - GF_ANALYTICS_REPORTING_ENABLED=false
+    env_file:
+      - .env
     restart: unless-stopped
     networks:
       - monitoring
+      - npm_network
     depends_on:
       - prometheus
     healthcheck:
@@ -98,6 +98,8 @@ networks:
   monitoring:
     name: monitoring
     driver: bridge
+  npm_network:
+    external: true
 
 volumes:
   prometheus_data:
