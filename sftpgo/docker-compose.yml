@@ -7,8 +7,7 @@ services:
       - npm_network
     ports:
       - "2022:2022"
-    expose:
-      - "8080"   # Web Admin UI — internal via npm_network
+      - "8080:8080"
     volumes:
       - sftpgo_data:/srv/sftpgo
       - sftpgo_config:/var/lib/sftpgo
