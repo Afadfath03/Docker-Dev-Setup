@@ -4,9 +4,10 @@ Full-featured SFTP server with Web Admin UI.
 
 ## Ports
 
-| Port | Protocol | Function |
+| Port (host) | Protocol | Function |
 |---|---|---|
 | 2022 | SFTP | File transfer |
+| 8083 | HTTP | Web Admin UI (direct) |
 | 8080 | HTTP | Web Admin UI (internal, via npm_network) |
 
 ## Quick Start
@@ -18,7 +19,7 @@ docker compose up -d
 
 ## First Setup
 
-1. Access Web Admin via NPM (e.g. `https://sftpgo.domain.com/web/admin`)
+1. Access Web Admin via `http://<ip>:8083/web/admin/setup` or via NPM (e.g. `https://sftpgo.domain.com/web/admin`)
 2. Create the first admin user
 3. Add SFTP users via Web Admin
 
