@@ -1,0 +1,43 @@
+services:
+  sftpgo:
+    image: drakkan/sftpgo:latest
+    container_name: sftpgo
+    restart: unless-stopped
+    networks:
+      - npm_network
+    ports:
+      - "2022:2022"
+    volumes:
+      - sftpgo_data:/srv/sftpgo
+      - sftpgo_config:/var/lib/sftpgo
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - FOWNER
+      - DAC_OVERRIDE
+      - NET_BIND_SERVICE
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://127.0.0.1:8080/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+networks:
+  npm_network:
+    external: true
+
+volumes:
+  sftpgo_data:
+  sftpgo_config:

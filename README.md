@@ -20,6 +20,7 @@ Modular Docker services for development server / VPS.
 | [nginx-proxy-manager](./nginx-proxy-manager) | `80`, `81`, `443` | Reverse proxy with web UI |
 | [portainer](./portainer) | `9443`, `8000` | Container management UI |
 | [searxng](./searxng) | `8443` | Private meta-search engine |
+| [sftpgo](./sftpgo) | `2022`, `8080` | SFTP server + Web UI |
 
 ## Access
 
@@ -37,6 +38,7 @@ Modular Docker services for development server / VPS.
 | Blocky | `http://<ip>:4000` | `4000` | DNS API / metrics |
 | IT-Tools | `http://<ip>:8082` | `8082` | Utility tools |
 | cAdvisor | `http://<ip>:8081` | `8081` | Container metrics |
+| SFTPGo | `sftp://<ip>:2022` | `2022` | SFTP server; admin via NPM `sftpgo.domain.com/web/admin` |
 
 ## Architecture
 

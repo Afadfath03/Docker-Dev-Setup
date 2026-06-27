@@ -107,7 +107,9 @@ Push to `main` → GitHub Actions auto-deploys to VPS via SSH.
 | 81 | nginx-proxy-manager | Admin UI |
 | 3306 | MySQL | Database |
 | 5432 | PostgreSQL | Database (localhost) |
+| 2022 | sftpgo | SFTP |
 | 4000 | Blocky | HTTP API |
+| 8080 | sftpgo | Web Admin UI (internal) |
 | 8000 | Portainer | Tunnel |
 | 8081 | cAdvisor | Container metrics |
 | 8082 | IT-Tools | Web UI |
