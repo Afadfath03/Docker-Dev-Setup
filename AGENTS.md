@@ -1,38 +1,39 @@
 # AGENTS.md — Docker-Dev-Setup
 
-Update this file when you change conventions, add/remove services, or modify
-shared structures (networks, naming).
+Update this file when you change conventions, add/remove services, or modify shared structures (networks, naming).
 
 ## Structure
 
-Modular Docker services for a VPS dev server. Each service is a root-level
-directory with its own `docker-compose.yml`. Run independently:
+Modular Docker services for a VPS dev server. Each service is a root-level directory (or nested) with its own `docker-compose.yml`. Run independently:
 
 ```
-cd <service> && [ -f .env.example ] && cp -n .env.example .env && docker compose up -d
+cd <service-dir>
+[ -f .env.example ] && cp -n .env.example .env
+docker compose up -d
 ```
+
+Services with `.env.example`: `9router`, `monitoring`, `searxng`, `supabase/*/`, `model-context-protocol_server/arabold Docs MCP Server/`.
+
+**Nested compose dirs** (not root-level):
+- `database/SQL/mysql/`, `database/SQL/postgresql/`, `database/management/` (CloudBeaver)
+- `supabase/full/`, `supabase/minimal/`
+- `model-context-protocol_server/arabold Docs MCP Server/` — **dir name has a space**, quote it in shell
 
 ## Key facts an agent would likely miss
 
-- **`database/` has no db compose files.** It contains SQL scripts in
-  `SQL/mysql/` and `SQL/postgresql/`, and a CloudBeaver UI compose in
-  `management/`. MySQL and PostgreSQL run natively on the host (or in separate
-  repos). Don't look for their compose files here.
-- **Supabase has two variants:** `supabase/full/` and `supabase/minimal/`.
-  Pick the right one. Both share the same `.env.example` pattern.
-- **`npm_network`** is external; created once (`docker network create npm_network`).
-  Every compose that needs it declares `networks.npm_network.external: true`.
-- **`monitoring` network** is a dedicated bridge for the stack. Only Grafana
-  also attaches to `npm_network` (for reverse proxy access).
-- **9Router mounts host home dirs:** `${HOME}:/home/user` — usage/log data
-  lives on the host, not in named volumes. Back up `~/.9router` and
-  `~/.9router-usage`.
-- **CI deploy** (`.github/workflows/deploy.yml`) is just `git pull` via SSH.
-  No compose commands, no rebuild. Run those manually.
-- **Some services skip common patterns:** `it-tools`, `portainer`, and
-  `blocky_dns` have no `security_opt`/`cap_drop`. Logging `max-size` varies
-  (nginx-proxy-manager uses `50m`). Each service is self-contained; the
-  templates below are conventions, not rules.
+- **`database/` structure:** `SQL/mysql/` and `SQL/postgresql/` DO have compose files (MySQL binds `0.0.0.0:3306`, Postgres binds `127.0.0.1:5432` only). `management/` has CloudBeaver. These are Docker containers, not host-native.
+- **Supabase has two variants:** `supabase/full/` (DB + Auth + REST + Realtime + Storage + Edge Functions + Studio + Kong + Supavisor) and `supabase/minimal/` (same minus Realtime, Storage, Edge Functions). Pick the right one. Both need `.env` from `.env.example`.
+- **`npm_network`** is external; created once (`docker network create npm_network`). Every compose that needs it declares `networks.npm_network.external: true`.
+- **`monitoring` network** is a dedicated bridge. Only Grafana also attaches to `npm_network` (for reverse proxy access).
+- **9Router mounts host home dirs:** `${HOME}:/home/user` — usage/log data lives on the host, not in named volumes. Back up `~/.9router` and `~/.9router-usage`.
+- **CI deploy** (`.github/workflows/deploy.yml`) is just `git pull` via SSH on the VPS. No compose commands, no rebuild. Run those manually.
+- **Only `monitoring/docker-compose.yml`** uses the legacy `version: '3.8'` header. All other compose files omit it (Compose v2 doesn't need it).
+- **Portainer mounts `/var/run/docker.sock`** (needs Docker API access to manage containers).
+- **blocky_dns** is the only service needing `cap_add: [NET_ADMIN]` (raw socket for DNS on port 53).
+- **SearXNG** has two containers (`redis` + `searxng`) in one compose — the only multi-service compose outside monitoring/supabase.
+- **Healthcheck gaps:** it-tools, portainer, searxng, blocky_dns, database/management, cloudbeaver have NO healthcheck.
+- **Security gaps (no `security_opt`/`cap_drop`):** it-tools, portainer, searxng, blocky_dns, database/management, database/SQL/*/. The security template in this file is a convention, not enforced everywhere.
+- **Logging `max-size`:** nginx-proxy-manager is the only exception at `50m`; all others use `10m`.
 
 ## Conventions (use as default; deviate when the service demands it)
 
@@ -50,6 +51,8 @@ cap_drop: [ALL]
 cap_add: [NET_BIND_SERVICE]   # minimum; add others per image requirements
 ```
 
+`cap_add` varies per service. Common additions beyond `NET_BIND_SERVICE`: `CHOWN`, `FOWNER`, `DAC_OVERRIDE`, `SETUID`, `SETGID` (nginx-proxy-manager, sftpgo).
+
 Logging (default):
 ```yaml
 logging:
@@ -64,20 +67,21 @@ Resource limits:
 deploy:
   resources:
     limits:
-      memory: 256M   # per-service; 9router=512M, nginx-proxy-manager=1G
+      memory: 256M   # per-service; 9router=512M, nginx-proxy-manager=1G, supabase-db=1G
 ```
 
 Healthcheck:
 - TCP: `["CMD-SHELL", "nc -z localhost <port> || exit 1"]`
 - HTTP: `["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:<port>/<path>"]`
+- DB: `pg_isready` / `mysqladmin ping` for database services
 
 ## Adding a new service
 
 1. Create `service-name/` with `docker-compose.yml`
-2. Add `.env.example` if secrets are needed
-3. If behind NPM → add `networks: [npm_network]` and the top-level external
-   network stanza
-4. Update root `README.md` services table
+2. Add `.env.example` if secrets are needed — see `9router/.env.example` for a well-commented example
+3. If behind NPM → add `networks: [npm_network]` and the top-level external network stanza
+4. Follow the convention templates above for security, logging, resource limits, healthcheck
+5. Update root `README.md` services table
 
 ## Port reference (external-facing)
 
@@ -88,12 +92,12 @@ Healthcheck:
 | 81 | nginx-proxy-manager | Admin UI |
 | 2022 | sftpgo | SFTP |
 | 3001 | Grafana | Dashboard |
-| 3306 | MySQL | Database (host-native) |
+| 3306 | MySQL | Database (Docker, port exposed) |
 | 4000 | Blocky | HTTP API |
-| 5432 | PostgreSQL | Database (host-native, localhost) |
-| 5433 | supabase | Postgres (via Supavisor) |
+| 5432 | PostgreSQL | Database (Docker, localhost-only) |
+| 5433 | supabase | Postgres (via Supavisor, session mode) |
 | 6280 | arabold Docs MCP Server | Documentation index & MCP SSE |
-| 6543 | supabase | Postgres transaction mode |
+| 6543 | supabase | Postgres (via Supavisor, transaction mode) |
 | 8000 | Portainer | Tunnel |
 | 8002 | supabase | Kong HTTP (Studio/API) |
 | 8081 | cAdvisor | Container metrics |
@@ -107,7 +111,10 @@ Healthcheck:
 | 9443 | Portainer | HTTPS UI |
 | 20128 | 9Router | AI routing |
 
+## Per-service READMEs
+
+All service directories contain a `README.md` with setup steps, access URLs, and defaults. Check them before editing a service's compose file.
+
 ## Deploy
 
-Push to `main` → GitHub Actions SSH-es into VPS and `git pull`s. No
-automatic compose operations.
+Push to `main` → GitHub Actions SSH-es into VPS and `git pull`s. No automatic compose operations. Run `docker compose pull && docker compose up -d` manually on the VPS to update a running service.
