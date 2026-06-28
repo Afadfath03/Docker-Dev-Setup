@@ -21,6 +21,7 @@ Modular Docker services for development server / VPS.
 | [portainer](./portainer) | `9443`, `8000` | Container management UI |
 | [searxng](./searxng) | `8443` | Private meta-search engine |
 | [sftpgo](./sftpgo) | `2022`, `8083` | SFTP server + Web UI |
+| [supabase](./supabase) | `8002`, `8444`, `5433`, `6543` | BaaS — full or minimal stack |
 
 ## Access
 
@@ -39,6 +40,10 @@ Modular Docker services for development server / VPS.
 | IT-Tools | `http://<ip>:8082` | `8082` | Utility tools |
 | cAdvisor | `http://<ip>:8081` | `8081` | Container metrics |
 | SFTPGo | `sftp://<ip>:2022`, `http://<ip>:8083` | `2022`, `8083` | SFTP server; Web Admin UI via `http://<ip>:8083/web/admin` or NPM |
+| Supabase Studio | `http://<ip>:8002` | `8002` | Dashboard (login via `DASHBOARD_USERNAME`/`DASHBOARD_PASSWORD`) |
+| Supabase (Kong) | `http://<ip>:8002` | `8002` | API gateway — REST, Auth, Storage, GraphQL |
+| Supabase Postgres | `<ip>:5433` | `5433` | Postgres via Supavisor (session mode) |
+| Supabase Postgres (tx) | `<ip>:6543` | `6543` | Postgres via Supavisor (transaction mode) |
 
 ## Architecture
 

@@ -105,17 +105,21 @@ Push to `main` → GitHub Actions auto-deploys to VPS via SSH.
 | 53 | blocky_dns | DNS (UDP/TCP) |
 | 80, 443 | nginx-proxy-manager | HTTP/HTTPS proxy |
 | 81 | nginx-proxy-manager | Admin UI |
-| 3306 | MySQL | Database |
-| 5432 | PostgreSQL | Database (localhost) |
 | 2022 | sftpgo | SFTP |
+| 3001 | Grafana | Dashboard |
+| 3306 | MySQL | Database |
 | 4000 | Blocky | HTTP API |
-| 8080 | sftpgo | Web Admin UI (internal) |
+| 5432 | PostgreSQL | Database (localhost) |
+| 5433 | supabase | Postgres (via Supavisor) |
+| 6543 | supabase | Postgres transaction mode |
 | 8000 | Portainer | Tunnel |
+| 8002 | supabase | Kong HTTP (Studio/API) |
+| 8080 | sftpgo | Web Admin UI (internal) |
 | 8081 | cAdvisor | Container metrics |
 | 8082 | IT-Tools | Web UI |
 | 8443 | SearXNG | Search engine |
+| 8444 | supabase | Kong HTTPS |
 | 8978 | CloudBeaver | DB admin UI |
 | 9090 | Prometheus | Metrics |
 | 9443 | Portainer | HTTPS UI |
-| 3001 | Grafana | Dashboard |
 | 20128 | 9Router | AI routing |
