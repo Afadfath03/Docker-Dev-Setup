@@ -16,6 +16,7 @@ Modular Docker services for development server / VPS.
 | [blocky_dns](./blocky_dns) | `53`, `4000` | DNS ad/tracker blocker |
 | [database](./database) | `3306`, `5432`, `8978` | MySQL, PostgreSQL, CloudBeaver |
 | [it-tools](./it-tools) | `8082` | IT utilities (web) |
+| [model-context-protocol_server](./model-context-protocol_server) | `6280` | Grounded Docs MCP Server — documentation index for AI |
 | [monitoring](./monitoring) | `9090`, `3001`, `9100`, `8081` | Prometheus + Grafana + cAdvisor |
 | [nginx-proxy-manager](./nginx-proxy-manager) | `80`, `81`, `443` | Reverse proxy with web UI |
 | [portainer](./portainer) | `9443`, `8000` | Container management UI |
@@ -38,6 +39,7 @@ Modular Docker services for development server / VPS.
 | SearXNG | `http://<ip>:8443` | `8443` | Private search |
 | Blocky | `http://<ip>:4000` | `4000` | DNS API / metrics |
 | IT-Tools | `http://<ip>:8082` | `8082` | Utility tools |
+| Docs MCP Server | `http://<ip>:6280` | `6280` | Documentation index & MCP endpoint |
 | cAdvisor | `http://<ip>:8081` | `8081` | Container metrics |
 | SFTPGo | `sftp://<ip>:2022`, `http://<ip>:8083` | `2022`, `8083` | SFTP server; Web Admin UI via `http://<ip>:8083/web/admin` or NPM |
 | Supabase Studio | `http://<ip>:8002` | `8002` | Dashboard (login via `DASHBOARD_USERNAME`/`DASHBOARD_PASSWORD`) |

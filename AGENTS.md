@@ -92,6 +92,7 @@ Healthcheck:
 | 4000 | Blocky | HTTP API |
 | 5432 | PostgreSQL | Database (host-native, localhost) |
 | 5433 | supabase | Postgres (via Supavisor) |
+| 6280 | arabold Docs MCP Server | Documentation index & MCP SSE |
 | 6543 | supabase | Postgres transaction mode |
 | 8000 | Portainer | Tunnel |
 | 8002 | supabase | Kong HTTP (Studio/API) |

@@ -1,0 +1,41 @@
+services:
+  docs-mcp:
+    image: ghcr.io/arabold/docs-mcp-server:latest
+    container_name: docs-mcp
+    restart: unless-stopped
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
+    ports:
+      - "6280:6280"
+    volumes:
+      - docs_mcp_data:/data
+      - docs_mcp_config:/config
+    environment:
+      - DOCS_MCP_STORE_PATH=/data
+      - XDG_CONFIG_HOME=/config
+    env_file:
+      - .env
+    networks:
+      - npm_network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:6280/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
+    command: ["--protocol", "http", "--host", "0.0.0.0", "--port", "6280"]
+
+volumes:
+  docs_mcp_data:
+    name: docs_mcp_data
+  docs_mcp_config:
+    name: docs_mcp_config
+
+networks:
+  npm_network:
+    external: true
