@@ -9,6 +9,21 @@ services:
       - "8978:8978"
     volumes:
       - cloudbeaver_data:/opt/cloudbeaver/workspace
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
+    deploy:
+      resources:
+        limits:
+          memory: 512M
 
 networks:
   npm_network:

@@ -3,6 +3,16 @@ services:
     container_name: supabase-db
     image: supabase/postgres:17.6.1.136
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+      - CHOWN
+      - DAC_OVERRIDE
+      - SETUID
+      - SETGID
     volumes:
       - ./volumes/db/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:Z
       - ./volumes/db/webhooks.sql:/docker-entrypoint-initdb.d/init-scripts/98-webhooks.sql:Z
@@ -12,7 +22,7 @@ services:
       - ./volumes/db/_supabase.sql:/docker-entrypoint-initdb.d/migrations/97-_supabase.sql:Z
       - ./volumes/db/logs.sql:/docker-entrypoint-initdb.d/migrations/99-logs.sql:Z
       - ./volumes/db/pooler.sql:/docker-entrypoint-initdb.d/migrations/99-pooler.sql:Z
-      - db-config:/etc/postgresql-custom
+      - db_config:/etc/postgresql-custom
     environment:
       POSTGRES_HOST: /var/run/postgresql
       PGPORT: ${POSTGRES_PORT}
@@ -85,6 +95,12 @@ services:
       timeout: 5s
       retries: 10
       start_period: 30s
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
     logging:
       driver: json-file
       options:
@@ -427,7 +443,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./volumes/functions:/home/deno/functions:z
-      - deno-cache:/root/.cache/deno
+      - deno_cache:/root/.cache/deno
     depends_on:
       kong:
         condition: service_healthy
@@ -532,5 +548,7 @@ networks:
     external: true
 
 volumes:
-  db-config:
-  deno-cache:
+  db_config:
+    name: db_config
+  deno_cache:
+    name: deno_cache

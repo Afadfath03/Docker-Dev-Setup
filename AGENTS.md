@@ -12,12 +12,12 @@ cd <service-dir>
 docker compose up -d
 ```
 
-Services with `.env.example`: `9router`, `monitoring`, `searxng`, `supabase/*/`, `model-context-protocol_server/arabold Docs MCP Server/`.
+Services with `.env.example`: `9router`, `monitoring`, `searxng`, `supabase/*/`, `model-context-protocol-server/arabold_Docs-MCP-Server/`.
 
 **Nested compose dirs** (not root-level):
 - `database/SQL/mysql/`, `database/SQL/postgresql/`, `database/management/` (CloudBeaver)
 - `supabase/full/`, `supabase/minimal/`
-- `model-context-protocol_server/arabold Docs MCP Server/` — **dir name has a space**, quote it in shell
+- `model-context-protocol-server/arabold_Docs-MCP-Server/`
 
 ## Key facts an agent would likely miss
 
@@ -27,12 +27,11 @@ Services with `.env.example`: `9router`, `monitoring`, `searxng`, `supabase/*/`,
 - **`monitoring` network** is a dedicated bridge. Only Grafana also attaches to `npm_network` (for reverse proxy access).
 - **9Router mounts host home dirs:** `${HOME}:/home/user` — usage/log data lives on the host, not in named volumes. Back up `~/.9router` and `~/.9router-usage`.
 - **CI deploy** (`.github/workflows/deploy.yml`) is just `git pull` via SSH on the VPS. No compose commands, no rebuild. Run those manually.
-- **Only `monitoring/docker-compose.yml`** uses the legacy `version: '3.8'` header. All other compose files omit it (Compose v2 doesn't need it).
+- **Compose v2** — no compose file uses the legacy `version:` header (not needed).
 - **Portainer mounts `/var/run/docker.sock`** (needs Docker API access to manage containers).
 - **blocky_dns** is the only service needing `cap_add: [NET_ADMIN]` (raw socket for DNS on port 53).
 - **SearXNG** has two containers (`redis` + `searxng`) in one compose — the only multi-service compose outside monitoring/supabase.
-- **Healthcheck gaps:** it-tools, portainer, searxng, blocky_dns, database/management, cloudbeaver have NO healthcheck.
-- **Security gaps (no `security_opt`/`cap_drop`):** it-tools, portainer, searxng, blocky_dns, database/management, database/SQL/*/. The security template in this file is a convention, not enforced everywhere.
+- **Healthcheck gaps:** portainer, database/management (cloudbeaver) have NO healthcheck.
 - **Logging `max-size`:** nginx-proxy-manager is the only exception at `50m`; all others use `10m`.
 
 ## Conventions (use as default; deviate when the service demands it)
@@ -40,9 +39,9 @@ Services with `.env.example`: `9router`, `monitoring`, `searxng`, `supabase/*/`,
 | Item | Convention | Example |
 |---|---|---|
 | Container name | `kebab-case` | `nginx-proxy-manager`, `supabase-db` |
-| Volume name | `snake_case` | `portainer-data`, `grafana_data` |
+| Volume name | `snake_case` | `portainer_data`, `grafana_data` |
 | Network name | `snake_case` | `npm_network`, `monitoring` |
-| Service name | `kebab-case` | `it-tools`, `node_exporter` |
+| Service name | `kebab-case` | `it-tools`, `node-exporter` |
 
 Security (when applicable):
 ```yaml
@@ -96,7 +95,7 @@ Healthcheck:
 | 4000 | Blocky | HTTP API |
 | 5432 | PostgreSQL | Database (Docker, localhost-only) |
 | 5433 | supabase | Postgres (via Supavisor, session mode) |
-| 6280 | arabold Docs MCP Server | Documentation index & MCP SSE |
+| 6280 | arabold_Docs-MCP-Server | Documentation index & MCP SSE |
 | 6543 | supabase | Postgres (via Supavisor, transaction mode) |
 | 8000 | Portainer | Tunnel |
 | 8002 | supabase | Kong HTTP (Studio/API) |

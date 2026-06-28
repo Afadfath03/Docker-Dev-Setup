@@ -9,17 +9,28 @@ services:
       - "9443:9443"
       - "8000:8000"
     volumes:
-      - portainer-data:/data
+      - portainer_data:/data
       - /var/run/docker.sock:/var/run/docker.sock
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
 
 networks:
   npm_network:
     external: true
 
 volumes:
-  portainer-data:
+  portainer_data:
+    name: portainer_data

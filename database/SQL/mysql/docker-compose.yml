@@ -9,7 +9,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - mysql-data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     deploy:
       resources:
@@ -30,4 +30,5 @@ services:
         max-file: "3"
 
 volumes:
-  mysql-data:
+  mysql_data:
+    name: mysql_data

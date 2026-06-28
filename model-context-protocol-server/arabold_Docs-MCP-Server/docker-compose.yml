@@ -28,6 +28,10 @@ services:
       options:
         max-size: 10m
         max-file: 3
+    deploy:
+      resources:
+        limits:
+          memory: 256M
     command: ["--protocol", "http", "--host", "0.0.0.0", "--port", "6280"]
 
 volumes:

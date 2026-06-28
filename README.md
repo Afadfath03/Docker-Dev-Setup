@@ -16,7 +16,7 @@ Modular Docker services for development server / VPS.
 | [blocky_dns](./blocky_dns) | `53`, `4000` | DNS ad/tracker blocker |
 | [database](./database) | `3306`, `5432`, `8978` | MySQL, PostgreSQL, CloudBeaver |
 | [it-tools](./it-tools) | `8082` | IT utilities (web) |
-| [model-context-protocol_server](./model-context-protocol_server) | `6280` | Grounded Docs MCP Server — documentation index for AI |
+| [model-context-protocol-server](./model-context-protocol-server) | `6280` | Grounded Docs MCP Server — documentation index for AI |
 | [monitoring](./monitoring) | `9090`, `3001`, `9100`, `8081` | Prometheus + Grafana + cAdvisor |
 | [nginx-proxy-manager](./nginx-proxy-manager) | `80`, `81`, `443` | Reverse proxy with web UI |
 | [portainer](./portainer) | `9443`, `8000` | Container management UI |
