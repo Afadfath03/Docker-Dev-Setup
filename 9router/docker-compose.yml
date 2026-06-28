@@ -67,6 +67,4 @@ services:
 
 volumes:
   9router-data:
-    external: true
   9router-usage:
-    external: true
