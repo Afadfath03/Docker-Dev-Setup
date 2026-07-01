@@ -16,8 +16,8 @@ services:
 
     volumes:
       - "${HOME}:/home/user"
-      - 9router_data:/app/data
-      - 9router_usage:/app/data-home
+      - data:/app/data
+      - usage:/app/data-home
 
     environment:
       - DATA_DIR=${DATA_DIR:-/app/data}
@@ -66,7 +66,7 @@ services:
       start_period: 40s
 
 volumes:
-  9router_data:
+  data:
     name: 9router_data
-  9router_usage:
+  usage:
     name: 9router_usage
