@@ -15,6 +15,7 @@ Modular Docker services for development server / VPS.
 | [9router](./9router) | `20128` | AI routing gateway & token saver |
 | [blocky_dns](./blocky_dns) | `53`, `4000` | DNS ad/tracker blocker |
 | [database](./database) | `3306`, `5432`, `8978` | MySQL, PostgreSQL, CloudBeaver |
+| [excalidash](./excalidash) | `6767` | Whiteboard dengan kolaborasi & penyimpanan |
 | [it-tools](./it-tools) | `8082` | IT utilities (web) |
 | [model-context-protocol-server](./model-context-protocol-server) | `6280` | Grounded Docs MCP Server — documentation index for AI |
 | [monitoring](./monitoring) | `9090`, `3001`, `9100`, `8081` | Prometheus + Grafana + cAdvisor |
@@ -33,6 +34,7 @@ Modular Docker services for development server / VPS.
 | 9Router | `http://<ip>:20128` | `20128` | Dashboard, login with `INITIAL_PASSWORD` |
 | Grafana | `http://<ip>:3001` | `3001` | Login via `GF_SECURITY_ADMIN_USER` in `.env` |
 | Prometheus | `http://<ip>:9090` | `9090` | Metrics (no auth) |
+| ExcaliDash | `http://<ip>:6767` | `6767` | Dashboard, register via `/api/auth/register` |
 | MySQL | `<ip>:3306` | `3306` | user `root`, password `admin123` |
 | PostgreSQL | `localhost:5432` | `5432` | user `postgres`, password `admin123` |
 | CloudBeaver | `http://<ip>:8978` | `8978` | DB admin UI |

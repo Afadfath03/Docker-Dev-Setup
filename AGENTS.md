@@ -31,6 +31,7 @@ Services with `.env.example`: `9router`, `monitoring`, `searxng`, `supabase/*/`,
 - **Portainer mounts `/var/run/docker.sock`** (needs Docker API access to manage containers).
 - **blocky_dns** is the only service needing `cap_add: [NET_ADMIN]` (raw socket for DNS on port 53).
 - **SearXNG** has two containers (`redis` + `searxng`) in one compose — the only multi-service compose outside monitoring/supabase.
+- **ExcaliDash** has two containers (`backend` + `frontend`) in one compose. Uses a dedicated bridge network (`excalidash-network`) for backend↔frontend communication. Frontend also joins `npm_network` for reverse proxy access. Backend uses SQLite via named volume `excalidash_data`.
 - **Healthcheck gaps:** portainer, database/management (cloudbeaver) have NO healthcheck.
 - **Logging `max-size`:** nginx-proxy-manager is the only exception at `50m`; all others use `10m`.
 
@@ -97,6 +98,7 @@ Healthcheck:
 | 5433 | supabase | Postgres (via Supavisor, session mode) |
 | 6280 | arabold_Docs-MCP-Server | Documentation index & MCP SSE |
 | 6543 | supabase | Postgres (via Supavisor, transaction mode) |
+| 6767 | excalidash | Whiteboard UI |
 | 8000 | Portainer | Tunnel |
 | 8002 | supabase | Kong HTTP (Studio/API) |
 | 8081 | cAdvisor | Container metrics |
