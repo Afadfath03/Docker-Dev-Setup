@@ -25,13 +25,13 @@ Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `app
 - `management/` → Portainer, SFTPGo
 
 **Nested compose dirs** (deeper than 1 level):
-- `database/SQL/mysql/`, `database/SQL/postgresql/`, `database/management/` (CloudBeaver)
+- `database/SQL/mysql/`, `database/SQL/postgresql/`, `database/cloudbeaver/`
 - `database/supabase/full/`, `database/supabase/minimal/`
 - `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`
 
 ## Key facts an agent would likely miss
 
-- **`database/` structure:** `SQL/mysql/` and `SQL/postgresql/` DO have compose files (MySQL binds `0.0.0.0:3306`, Postgres binds `127.0.0.1:5432` only). `management/` has CloudBeaver. These are Docker containers, not host-native.
+- **`database/` structure:** `SQL/mysql/` and `SQL/postgresql/` DO have compose files (MySQL binds `0.0.0.0:3306`, Postgres binds `127.0.0.1:5432` only). `cloudbeaver/` for DB admin UI. These are Docker containers, not host-native.
 - **Supabase has two variants:** `database/supabase/full/` (DB + Auth + REST + Realtime + Storage + Edge Functions + Studio + Kong + Supavisor) and `database/supabase/minimal/` (same minus Realtime, Storage, Edge Functions). Pick the right one. Both need `.env` from `.env.example`.
 - **`npm_network`** is external; created once (`docker network create npm_network`). Every compose that needs it declares `networks.npm_network.external: true`.
 - **`monitoring` network** is a dedicated bridge. Only Grafana also attaches to `npm_network` (for reverse proxy access).
@@ -47,7 +47,7 @@ Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `app
 - **Vaultwarden** uses SQLite by default (no external DB needed). `ADMIN_TOKEN` wajib diisi di `.env` untuk mengaktifkan admin panel (`/admin`). Set `DOMAIN` ke URL yang akan dipakai (via NPM).
 - **n8n** membutuhkan `N8N_ENCRYPTION_KEY` untuk production — generate via `openssl rand -hex 32`. `N8N_HOST` dan `WEBHOOK_URL` harus diisi dengan domain NPM.
 - **Stirling PDF** butuh memory lebih besar (512M default) untuk PDF processing. Bisa dinaikkan ke 1G atau 2G untuk file besar.
-- **Healthcheck gaps:** portainer, database/management (cloudbeaver), searxng/redis, supabase/meta (both full & minimal) have NO healthcheck.
+- **Healthcheck gaps:** portainer, database/cloudbeaver, searxng/redis, supabase/meta (both full & minimal) have NO healthcheck.
 - **Logging `max-size`:** nginx-proxy-manager is the only exception at `50m`; all others use `10m`.
 - **Resource limit overrides:** MySQL=1G, PostgreSQL=1G, CloudBeaver=512M, Prometheus=512M, Supabase Studio=512M, Blocky=128M, node-exporter=128M, SearXNG redis=128M, Supabase REST=128M, Supabase meta=128M.
 
