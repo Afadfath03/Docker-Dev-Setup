@@ -16,8 +16,8 @@ Modular Docker services for development server / VPS.
 | [blocky_dns](./networking/blocky_dns) | `53`, `4000` | DNS ad/tracker blocker |
 | [database](./database) | `3306`, `5432`, `8086`, `8087`, `8978` | MySQL, PostgreSQL, Adminer, phpMyAdmin, CloudBeaver |
 | [dozzle](./monitoring/dozzle) | `8888` | Real-time Docker log viewer |
-| [excalidash](./apps/excalidash) | `6767` | Whiteboard dengan kolaborasi & penyimpanan |
-| [homepage](./apps/homepage) | `3000` | Dashboard landing page untuk semua service |
+| [excalidash](./misc/excalidash) | `6767` | Whiteboard dengan kolaborasi & penyimpanan |
+| [homepage](./misc/homepage) | `3000` | Dashboard landing page untuk semua service |
 | [it-tools](./misc/it-tools) | `8082` | IT utilities (web) |
 | [model-context-protocol-server](./ai-automation/model-context-protocol-server) | `6280` | Grounded Docs MCP Server — documentation index for AI |
 | [monitoring](./monitoring) | `9090`, `3001`, `9100`, `8081` | Prometheus + Grafana + cAdvisor |

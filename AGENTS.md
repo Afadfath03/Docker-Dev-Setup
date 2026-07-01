@@ -12,7 +12,7 @@ cd <category>/<service-dir>
 docker compose up -d
 ```
 
-Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `apps/excalidash`, `monitoring`, `ai-automation/n8n`, `misc/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`.
+Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `misc/excalidash`, `monitoring`, `ai-automation/n8n`, `misc/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`.
 
 **Category directories:**
 - `database/` → MySQL, PostgreSQL, CloudBeaver, Adminer, phpMyAdmin, Supabase
@@ -20,8 +20,7 @@ Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `app
 - `networking/` → Nginx Proxy Manager, Blocky DNS
 - `security/` → Vaultwarden
 - `ai-automation/` → 9Router, MCP Server, n8n
-- `misc/` → IT-Tools, Stirling PDF, SearXNG
-- `apps/` → ExcaliDash, Homepage
+- `misc/` → IT-Tools, Stirling PDF, SearXNG, ExcaliDash, Homepage
 - `management/` → Portainer, SFTPGo
 
 **Nested compose dirs** (deeper than 1 level):
