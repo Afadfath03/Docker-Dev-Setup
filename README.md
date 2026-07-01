@@ -14,7 +14,7 @@ Modular Docker services for development server / VPS.
 |---|---|---|
 | [9router](./ai-automation/9router) | `20128` | AI routing gateway & token saver |
 | [blocky_dns](./networking/blocky_dns) | `53`, `4000` | DNS ad/tracker blocker |
-| [database](./database) | `3306`, `5432`, `8978` | MySQL, PostgreSQL, CloudBeaver |
+| [database](./database) | `3306`, `5432`, `8086`, `8087`, `8978` | MySQL, PostgreSQL, Adminer, phpMyAdmin, CloudBeaver |
 | [dozzle](./monitoring/dozzle) | `8888` | Real-time Docker log viewer |
 | [excalidash](./apps/excalidash) | `6767` | Whiteboard dengan kolaborasi & penyimpanan |
 | [homepage](./apps/homepage) | `3000` | Dashboard landing page untuk semua service |
@@ -42,6 +42,8 @@ Modular Docker services for development server / VPS.
 | ExcaliDash | `http://<ip>:6767` | `6767` | Dashboard, register via `/api/auth/register` |
 | MySQL | `<ip>:3306` | `3306` | user `root`, password `admin123` |
 | PostgreSQL | `localhost:5432` | `5432` | user `postgres`, password `admin123` |
+| Adminer | `http://<ip>:8086` | `8086` | DB admin UI (multi-engine) |
+| phpMyAdmin | `http://<ip>:8087` | `8087` | MySQL admin UI |
 | CloudBeaver | `http://<ip>:8978` | `8978` | DB admin UI |
 | SearXNG | `http://<ip>:8443` | `8443` | Private search |
 | Blocky | `http://<ip>:4000` | `4000` | DNS API / metrics |

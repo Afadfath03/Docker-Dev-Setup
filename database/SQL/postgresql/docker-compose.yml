@@ -3,6 +3,8 @@ services:
     image: postgres:alpine
     container_name: postgres-db
     restart: unless-stopped
+    networks:
+      - npm_network
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin123
@@ -31,6 +33,10 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+networks:
+  npm_network:
+    external: true
 
 volumes:
   postgres_data:

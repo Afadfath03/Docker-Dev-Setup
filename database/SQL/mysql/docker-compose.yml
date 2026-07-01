@@ -3,6 +3,8 @@ services:
     image: mysql:lts
     container_name: mysql-db
     restart: unless-stopped
+    networks:
+      - npm_network
     environment:
       MYSQL_ROOT_PASSWORD: admin123
       MYSQL_DATABASE: app
@@ -28,6 +30,10 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+networks:
+  npm_network:
+    external: true
 
 volumes:
   mysql_data:

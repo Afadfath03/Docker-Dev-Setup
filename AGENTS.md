@@ -15,7 +15,7 @@ docker compose up -d
 Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `apps/excalidash`, `monitoring`, `ai-automation/n8n`, `misc/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`.
 
 **Category directories:**
-- `database/` → MySQL, PostgreSQL, CloudBeaver, Supabase
+- `database/` → MySQL, PostgreSQL, CloudBeaver, Adminer, phpMyAdmin, Supabase
 - `monitoring/` → Prometheus, Grafana, cAdvisor, node_exporter, Dozzle
 - `networking/` → Nginx Proxy Manager, Blocky DNS
 - `security/` → Vaultwarden
@@ -25,7 +25,7 @@ Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `app
 - `management/` → Portainer, SFTPGo
 
 **Nested compose dirs** (deeper than 1 level):
-- `database/SQL/mysql/`, `database/SQL/postgresql/`, `database/cloudbeaver/`
+- `database/SQL/mysql/`, `database/SQL/postgresql/`, `database/cloudbeaver/`, `database/adminer/`, `database/phpmyadmin/`
 - `database/supabase/full/`, `database/supabase/minimal/`
 - `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`
 
@@ -127,6 +127,8 @@ Healthcheck:
 | 8443 | SearXNG | Search engine |
 | 8444 | supabase | Kong HTTPS |
 | 8888 | dozzle | Docker log viewer |
+| 8086 | Adminer | DB admin UI (multi-engine) |
+| 8087 | phpMyAdmin | MySQL admin UI |
 | 8978 | CloudBeaver | DB admin UI |
 | 9090 | Prometheus | Metrics |
 | 9100 | node_exporter | Host metrics |

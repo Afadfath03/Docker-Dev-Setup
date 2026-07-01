@@ -1,0 +1,35 @@
+services:
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: unless-stopped
+    networks:
+      - npm_network
+    ports:
+      - "8087:80"
+    environment:
+      PMA_ARBITRARY: 1
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:80/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+
+networks:
+  npm_network:
+    external: true
