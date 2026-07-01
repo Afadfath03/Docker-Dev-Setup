@@ -12,7 +12,7 @@ cd <service-dir>
 docker compose up -d
 ```
 
-Services with `.env.example`: `9router`, `dozzle`, `monitoring`, `n8n`, `searxng`, `stirling-pdf`, `supabase/*/`, `vaultwarden`, `model-context-protocol-server/arabold_Docs-MCP-Server/`.
+Services with `.env.example`: `9router`, `dozzle`, `excalidash`, `monitoring`, `n8n`, `searxng`, `stirling-pdf`, `supabase/*/`, `vaultwarden`, `model-context-protocol-server/arabold_Docs-MCP-Server/`.
 
 **Nested compose dirs** (not root-level):
 - `database/SQL/mysql/`, `database/SQL/postgresql/`, `database/management/` (CloudBeaver)
@@ -30,14 +30,16 @@ Services with `.env.example`: `9router`, `dozzle`, `monitoring`, `n8n`, `searxng
 - **Compose v2** — no compose file uses the legacy `version:` header (not needed).
 - **Portainer mounts `/var/run/docker.sock`** (needs Docker API access to manage containers).
 - **blocky_dns** is the only service needing `cap_add: [NET_ADMIN]` (raw socket for DNS on port 53).
-- **SearXNG** has two containers (`redis` + `searxng`) in one compose — the only multi-service compose outside monitoring/supabase.
-- **ExcaliDash** has two containers (`backend` + `frontend`) in one compose. Uses a dedicated bridge network (`excalidash-network`) for backend↔frontend communication. Frontend also joins `npm_network` for reverse proxy access. Backend uses SQLite via named volume `excalidash_data`.
+- **SearXNG** has two containers (`redis` + `searxng`) in one compose — one of the multi-service composes outside monitoring/supabase (see also ExcaliDash with `backend` + `frontend`).
+- **ExcaliDash** has two containers (`backend` + `frontend`) in one compose. Uses a dedicated bridge network (`excalidash_network`) for backend↔frontend communication. Frontend also joins `npm_network` for reverse proxy access. Backend uses SQLite via named volume `excalidash_data`.
 - **Homepage + Dozzle mount `/var/run/docker.sock`**: Homepage uses it read-only (`:ro`) for auto-discovering containers; Dozzle uses it for live log streaming. Dozzle can also enable actions (stop/start) and shell access if `DOZZLE_ENABLE_ACTIONS` / `DOZZLE_ENABLE_SHELL` is set.
+- **cAdvisor runs with `privileged: true`** to access host disk devices for I/O metrics — the only service using full privileged mode. Its `security_opt`/`cap_drop`/`cap_add` stanzas are declared but functionally inert (negated by privileged).
 - **Vaultwarden** uses SQLite by default (no external DB needed). `ADMIN_TOKEN` wajib diisi di `.env` untuk mengaktifkan admin panel (`/admin`). Set `DOMAIN` ke URL yang akan dipakai (via NPM).
 - **n8n** membutuhkan `N8N_ENCRYPTION_KEY` untuk production — generate via `openssl rand -hex 32`. `N8N_HOST` dan `WEBHOOK_URL` harus diisi dengan domain NPM.
 - **Stirling PDF** butuh memory lebih besar (512M default) untuk PDF processing. Bisa dinaikkan ke 1G atau 2G untuk file besar.
-- **Healthcheck gaps:** portainer, database/management (cloudbeaver) have NO healthcheck.
+- **Healthcheck gaps:** portainer, database/management (cloudbeaver), searxng/redis, supabase/meta (both full & minimal) have NO healthcheck.
 - **Logging `max-size`:** nginx-proxy-manager is the only exception at `50m`; all others use `10m`.
+- **Resource limit overrides:** MySQL=1G, PostgreSQL=1G, CloudBeaver=512M, Prometheus=512M, Supabase Studio=512M, Blocky=128M, node-exporter=128M, SearXNG redis=128M, Supabase REST=128M, Supabase meta=128M.
 
 ## Conventions (use as default; deviate when the service demands it)
 
@@ -55,7 +57,7 @@ cap_drop: [ALL]
 cap_add: [NET_BIND_SERVICE]   # minimum; add others per image requirements
 ```
 
-`cap_add` varies per service. Common additions beyond `NET_BIND_SERVICE`: `CHOWN`, `FOWNER`, `DAC_OVERRIDE`, `SETUID`, `SETGID` (nginx-proxy-manager, sftpgo).
+`cap_add` varies per service. Common additions beyond `NET_BIND_SERVICE`: `CHOWN`, `FOWNER`, `DAC_OVERRIDE` (sftpgo, supabase-db). Nginx Proxy Manager additionally needs `SETUID`, `SETGID`.
 
 Logging (default):
 ```yaml
@@ -71,7 +73,7 @@ Resource limits:
 deploy:
   resources:
     limits:
-      memory: 256M   # per-service; 9router=512M, n8n=512M, stirling-pdf=512M, nginx-proxy-manager=1G, supabase-db=1G
+      memory: 256M   # per-service; see "Resource limit overrides" below
 ```
 
 Healthcheck:

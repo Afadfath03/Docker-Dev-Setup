@@ -16,7 +16,7 @@ services:
     volumes:
       - excalidash_data:/app/prisma
     networks:
-      - excalidash-network
+      - excalidash_network
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -50,7 +50,7 @@ services:
       - "6767:80"
     networks:
       - npm_network
-      - excalidash-network
+      - excalidash_network
     security_opt:
       - no-new-privileges:true
     cap_drop:
@@ -73,10 +73,11 @@ services:
       retries: 3
 
 networks:
-  excalidash-network:
+  excalidash_network:
     driver: bridge
   npm_network:
     external: true
 
 volumes:
   excalidash_data:
+    name: excalidash_data

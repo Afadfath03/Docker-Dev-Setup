@@ -41,3 +41,4 @@ networks:
 
 volumes:
   dozzle_data:
+    name: dozzle_data

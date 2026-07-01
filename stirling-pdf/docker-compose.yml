@@ -41,4 +41,6 @@ networks:
 
 volumes:
   stirling_pdf_config:
+    name: stirling_pdf_config
   stirling_pdf_logs:
+    name: stirling_pdf_logs

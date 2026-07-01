@@ -41,4 +41,6 @@ networks:
 
 volumes:
   sftpgo_data:
+    name: sftpgo_data
   sftpgo_config:
+    name: sftpgo_config

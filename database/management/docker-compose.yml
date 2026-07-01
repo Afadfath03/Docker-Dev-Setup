@@ -31,3 +31,4 @@ networks:
 
 volumes:
   cloudbeaver_data:
+    name: cloudbeaver_data
