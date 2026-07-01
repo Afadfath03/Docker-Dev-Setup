@@ -23,6 +23,7 @@ Modular Docker services for development server / VPS.
 | [monitoring](./monitoring) | `9090`, `3001`, `9100`, `8081` | Prometheus + Grafana + cAdvisor |
 | [n8n](./ai-automation/n8n) | `5678` | Workflow automation (no-code) |
 | [nginx-proxy-manager](./networking/nginx-proxy-manager) | `80`, `81`, `443` | Reverse proxy with web UI |
+| [open-webui](./ai-automation/open-webui) | `3002` | Self-hosted AI chat interface (Ollama/OpenAI) |
 | [portainer](./management/portainer) | `9443`, `8000` | Container management UI |
 | [searxng](./misc/searxng) | `8443` | Private meta-search engine |
 | [sftpgo](./management/sftpgo) | `2022`, `8083` | SFTP server + Web UI |
@@ -51,6 +52,7 @@ Modular Docker services for development server / VPS.
 | Homepage | `http://<ip>:3000` | `3000` | Dashboard landing page (configure via `config/`) |
 | IT-Tools | `http://<ip>:8082` | `8082` | Utility tools |
 | n8n | `http://<ip>:5678` | `5678` | Workflow automation; login after setup |
+| Open WebUI | `http://<ip>:3002` | `3002` | AI chat interface; register on first visit |
 | Stirling PDF | `http://<ip>:8085` | `8085` | PDF tools (no auth) |
 | Docs MCP Server | `http://<ip>:6280` | `6280` | Documentation index & MCP endpoint |
 | cAdvisor | `http://<ip>:8081` | `8081` | Container metrics |

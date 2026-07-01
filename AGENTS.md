@@ -12,14 +12,14 @@ cd <category>/<service-dir>
 docker compose up -d
 ```
 
-Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `misc/excalidash`, `monitoring`, `ai-automation/n8n`, `misc/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`.
+Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `misc/excalidash`, `monitoring`, `ai-automation/n8n`, `ai-automation/open-webui`, `misc/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`.
 
 **Category directories:**
 - `database/` → MySQL, PostgreSQL, CloudBeaver, Adminer, phpMyAdmin, Supabase
 - `monitoring/` → Prometheus, Grafana, cAdvisor, node_exporter, Dozzle
 - `networking/` → Nginx Proxy Manager, Blocky DNS
 - `security/` → Vaultwarden
-- `ai-automation/` → 9Router, MCP Server, n8n
+- `ai-automation/` → 9Router, MCP Server, n8n, Open WebUI
 - `misc/` → IT-Tools, Stirling PDF, SearXNG, ExcaliDash, Homepage
 - `management/` → Portainer, SFTPGo
 
@@ -108,6 +108,7 @@ Healthcheck:
 | 2022 | sftpgo | SFTP |
 | 3000 | homepage | Dashboard landing page |
 | 3001 | Grafana | Dashboard |
+| 3002 | open-webui | AI chat interface (Ollama/OpenAI) |
 | 3306 | MySQL | Database (Docker, port exposed) |
 | 4000 | Blocky | HTTP API |
 | 5432 | PostgreSQL | Database (Docker, localhost-only) |
