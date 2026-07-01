@@ -12,23 +12,23 @@ Modular Docker services for development server / VPS.
 
 | Service | Port | Function |
 |---|---|---|
-| [9router](./9router) | `20128` | AI routing gateway & token saver |
-| [blocky_dns](./blocky_dns) | `53`, `4000` | DNS ad/tracker blocker |
+| [9router](./ai-automation/9router) | `20128` | AI routing gateway & token saver |
+| [blocky_dns](./networking/blocky_dns) | `53`, `4000` | DNS ad/tracker blocker |
 | [database](./database) | `3306`, `5432`, `8978` | MySQL, PostgreSQL, CloudBeaver |
-| [dozzle](./dozzle) | `8888` | Real-time Docker log viewer |
-| [excalidash](./excalidash) | `6767` | Whiteboard dengan kolaborasi & penyimpanan |
-| [homepage](./homepage) | `3000` | Dashboard landing page untuk semua service |
-| [it-tools](./it-tools) | `8082` | IT utilities (web) |
-| [model-context-protocol-server](./model-context-protocol-server) | `6280` | Grounded Docs MCP Server — documentation index for AI |
+| [dozzle](./monitoring/dozzle) | `8888` | Real-time Docker log viewer |
+| [excalidash](./apps/excalidash) | `6767` | Whiteboard dengan kolaborasi & penyimpanan |
+| [homepage](./apps/homepage) | `3000` | Dashboard landing page untuk semua service |
+| [it-tools](./misc/it-tools) | `8082` | IT utilities (web) |
+| [model-context-protocol-server](./ai-automation/model-context-protocol-server) | `6280` | Grounded Docs MCP Server — documentation index for AI |
 | [monitoring](./monitoring) | `9090`, `3001`, `9100`, `8081` | Prometheus + Grafana + cAdvisor |
-| [n8n](./n8n) | `5678` | Workflow automation (no-code) |
-| [nginx-proxy-manager](./nginx-proxy-manager) | `80`, `81`, `443` | Reverse proxy with web UI |
-| [portainer](./portainer) | `9443`, `8000` | Container management UI |
-| [searxng](./searxng) | `8443` | Private meta-search engine |
-| [sftpgo](./sftpgo) | `2022`, `8083` | SFTP server + Web UI |
-| [stirling-pdf](./stirling-pdf) | `8085` | PDF manipulation tools (merge, split, OCR, dll) |
-| [supabase](./supabase) | `8002`, `8444`, `5433`, `6543` | BaaS — full or minimal stack |
-| [vaultwarden](./vaultwarden) | `8084` | Password manager (Bitwarden-compatible) |
+| [n8n](./ai-automation/n8n) | `5678` | Workflow automation (no-code) |
+| [nginx-proxy-manager](./networking/nginx-proxy-manager) | `80`, `81`, `443` | Reverse proxy with web UI |
+| [portainer](./management/portainer) | `9443`, `8000` | Container management UI |
+| [searxng](./misc/searxng) | `8443` | Private meta-search engine |
+| [sftpgo](./management/sftpgo) | `2022`, `8083` | SFTP server + Web UI |
+| [stirling-pdf](./misc/stirling-pdf) | `8085` | PDF manipulation tools (merge, split, OCR, dll) |
+| [supabase](./database/supabase) | `8002`, `8444`, `5433`, `6543` | BaaS — full or minimal stack |
+| [vaultwarden](./security/vaultwarden) | `8084` | Password manager (Bitwarden-compatible) |
 
 ## Access
 

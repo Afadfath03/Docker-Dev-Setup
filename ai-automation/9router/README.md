@@ -31,8 +31,8 @@
 
 ```bash
 # 1. Clone this repository
-git clone <repo-url> 9router
-cd 9router
+git clone <repo-url>
+cd docker-dev-setup/ai-automation/9router
 
 # 2. Setup environment variables
 cp .env.example .env

@@ -4,25 +4,35 @@ Update this file when you change conventions, add/remove services, or modify sha
 
 ## Structure
 
-Modular Docker services for a VPS dev server. Each service is a root-level directory (or nested) with its own `docker-compose.yml`. Run independently:
+Modular Docker services for a VPS dev server. Each service is a category directory with its own `docker-compose.yml`. Run independently:
 
 ```
-cd <service-dir>
+cd <category>/<service-dir>
 [ -f .env.example ] && cp -n .env.example .env
 docker compose up -d
 ```
 
-Services with `.env.example`: `9router`, `dozzle`, `excalidash`, `monitoring`, `n8n`, `searxng`, `stirling-pdf`, `supabase/*/`, `vaultwarden`, `model-context-protocol-server/arabold_Docs-MCP-Server/`.
+Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `apps/excalidash`, `monitoring`, `ai-automation/n8n`, `misc/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`.
 
-**Nested compose dirs** (not root-level):
+**Category directories:**
+- `database/` → MySQL, PostgreSQL, CloudBeaver, Supabase
+- `monitoring/` → Prometheus, Grafana, cAdvisor, node_exporter, Dozzle
+- `networking/` → Nginx Proxy Manager, Blocky DNS
+- `security/` → Vaultwarden
+- `ai-automation/` → 9Router, MCP Server, n8n
+- `misc/` → IT-Tools, Stirling PDF, SearXNG
+- `apps/` → ExcaliDash, Homepage
+- `management/` → Portainer, SFTPGo
+
+**Nested compose dirs** (deeper than 1 level):
 - `database/SQL/mysql/`, `database/SQL/postgresql/`, `database/management/` (CloudBeaver)
-- `supabase/full/`, `supabase/minimal/`
-- `model-context-protocol-server/arabold_Docs-MCP-Server/`
+- `database/supabase/full/`, `database/supabase/minimal/`
+- `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`
 
 ## Key facts an agent would likely miss
 
 - **`database/` structure:** `SQL/mysql/` and `SQL/postgresql/` DO have compose files (MySQL binds `0.0.0.0:3306`, Postgres binds `127.0.0.1:5432` only). `management/` has CloudBeaver. These are Docker containers, not host-native.
-- **Supabase has two variants:** `supabase/full/` (DB + Auth + REST + Realtime + Storage + Edge Functions + Studio + Kong + Supavisor) and `supabase/minimal/` (same minus Realtime, Storage, Edge Functions). Pick the right one. Both need `.env` from `.env.example`.
+- **Supabase has two variants:** `database/supabase/full/` (DB + Auth + REST + Realtime + Storage + Edge Functions + Studio + Kong + Supavisor) and `database/supabase/minimal/` (same minus Realtime, Storage, Edge Functions). Pick the right one. Both need `.env` from `.env.example`.
 - **`npm_network`** is external; created once (`docker network create npm_network`). Every compose that needs it declares `networks.npm_network.external: true`.
 - **`monitoring` network** is a dedicated bridge. Only Grafana also attaches to `npm_network` (for reverse proxy access).
 - **9Router mounts host home dirs:** `${HOME}:/home/user` — usage/log data lives on the host, not in named volumes. Back up `~/.9router` and `~/.9router-usage`.
@@ -84,7 +94,7 @@ Healthcheck:
 ## Adding a new service
 
 1. Create `service-name/` with `docker-compose.yml`
-2. Add `.env.example` if secrets are needed — see `9router/.env.example` for a well-commented example
+2. Add `.env.example` if secrets are needed — see `ai-automation/9router/.env.example` for a well-commented example
 3. If behind NPM → add `networks: [npm_network]` and the top-level external network stanza
 4. Follow the convention templates above for security, logging, resource limits, healthcheck
 5. Update root `README.md` services table
