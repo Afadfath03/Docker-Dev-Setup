@@ -1,0 +1,46 @@
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    networks:
+      - npm_network
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+    environment:
+      N8N_HOST: "${N8N_HOST}"
+      N8N_PROTOCOL: "${N8N_PROTOCOL:-https}"
+      N8N_PORT: 5678
+      N8N_ENCRYPTION_KEY: "${N8N_ENCRYPTION_KEY}"
+      WEBHOOK_URL: "${WEBHOOK_URL}"
+      GENERIC_TIMEZONE: "${GENERIC_TIMEZONE:-Asia/Jakarta}"
+      TZ: "${TZ:-Asia/Jakarta}"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:5678/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+networks:
+  npm_network:
+    external: true
+
+volumes:
+  n8n_data:

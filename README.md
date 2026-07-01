@@ -15,15 +15,20 @@ Modular Docker services for development server / VPS.
 | [9router](./9router) | `20128` | AI routing gateway & token saver |
 | [blocky_dns](./blocky_dns) | `53`, `4000` | DNS ad/tracker blocker |
 | [database](./database) | `3306`, `5432`, `8978` | MySQL, PostgreSQL, CloudBeaver |
+| [dozzle](./dozzle) | `8888` | Real-time Docker log viewer |
 | [excalidash](./excalidash) | `6767` | Whiteboard dengan kolaborasi & penyimpanan |
+| [homepage](./homepage) | `3000` | Dashboard landing page untuk semua service |
 | [it-tools](./it-tools) | `8082` | IT utilities (web) |
 | [model-context-protocol-server](./model-context-protocol-server) | `6280` | Grounded Docs MCP Server — documentation index for AI |
 | [monitoring](./monitoring) | `9090`, `3001`, `9100`, `8081` | Prometheus + Grafana + cAdvisor |
+| [n8n](./n8n) | `5678` | Workflow automation (no-code) |
 | [nginx-proxy-manager](./nginx-proxy-manager) | `80`, `81`, `443` | Reverse proxy with web UI |
 | [portainer](./portainer) | `9443`, `8000` | Container management UI |
 | [searxng](./searxng) | `8443` | Private meta-search engine |
 | [sftpgo](./sftpgo) | `2022`, `8083` | SFTP server + Web UI |
+| [stirling-pdf](./stirling-pdf) | `8085` | PDF manipulation tools (merge, split, OCR, dll) |
 | [supabase](./supabase) | `8002`, `8444`, `5433`, `6543` | BaaS — full or minimal stack |
+| [vaultwarden](./vaultwarden) | `8084` | Password manager (Bitwarden-compatible) |
 
 ## Access
 
@@ -40,9 +45,14 @@ Modular Docker services for development server / VPS.
 | CloudBeaver | `http://<ip>:8978` | `8978` | DB admin UI |
 | SearXNG | `http://<ip>:8443` | `8443` | Private search |
 | Blocky | `http://<ip>:4000` | `4000` | DNS API / metrics |
+| Dozzle | `http://<ip>:8888` | `8888` | Docker log viewer (no auth) |
+| Homepage | `http://<ip>:3000` | `3000` | Dashboard landing page (configure via `config/`) |
 | IT-Tools | `http://<ip>:8082` | `8082` | Utility tools |
+| n8n | `http://<ip>:5678` | `5678` | Workflow automation; login after setup |
+| Stirling PDF | `http://<ip>:8085` | `8085` | PDF tools (no auth) |
 | Docs MCP Server | `http://<ip>:6280` | `6280` | Documentation index & MCP endpoint |
 | cAdvisor | `http://<ip>:8081` | `8081` | Container metrics |
+| Vaultwarden | `http://<ip>:8084` | `8084` | Password manager; register/login via web |
 | SFTPGo | `sftp://<ip>:2022`, `http://<ip>:8083` | `2022`, `8083` | SFTP server; Web Admin UI via `http://<ip>:8083/web/admin` or NPM |
 | Supabase Studio | `http://<ip>:8002` | `8002` | Dashboard (login via `DASHBOARD_USERNAME`/`DASHBOARD_PASSWORD`) |
 | Supabase (Kong) | `http://<ip>:8002` | `8002` | API gateway — REST, Auth, Storage, GraphQL |

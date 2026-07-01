@@ -1,0 +1,43 @@
+services:
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: dozzle
+    restart: unless-stopped
+    networks:
+      - npm_network
+    ports:
+      - "8888:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - dozzle_data:/data
+    environment:
+      DOZZLE_AUTH_PROVIDER: "${DOZZLE_AUTH_PROVIDER:-}"
+      DOZZLE_HOSTNAME: "${DOZZLE_HOSTNAME:-}"
+      DOZZLE_ENABLE_ACTIONS: "${DOZZLE_ENABLE_ACTIONS:-false}"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+networks:
+  npm_network:
+    external: true
+
+volumes:
+  dozzle_data:

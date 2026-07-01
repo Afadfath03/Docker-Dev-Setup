@@ -12,7 +12,7 @@ cd <service-dir>
 docker compose up -d
 ```
 
-Services with `.env.example`: `9router`, `monitoring`, `searxng`, `supabase/*/`, `model-context-protocol-server/arabold_Docs-MCP-Server/`.
+Services with `.env.example`: `9router`, `dozzle`, `monitoring`, `n8n`, `searxng`, `stirling-pdf`, `supabase/*/`, `vaultwarden`, `model-context-protocol-server/arabold_Docs-MCP-Server/`.
 
 **Nested compose dirs** (not root-level):
 - `database/SQL/mysql/`, `database/SQL/postgresql/`, `database/management/` (CloudBeaver)
@@ -32,6 +32,10 @@ Services with `.env.example`: `9router`, `monitoring`, `searxng`, `supabase/*/`,
 - **blocky_dns** is the only service needing `cap_add: [NET_ADMIN]` (raw socket for DNS on port 53).
 - **SearXNG** has two containers (`redis` + `searxng`) in one compose — the only multi-service compose outside monitoring/supabase.
 - **ExcaliDash** has two containers (`backend` + `frontend`) in one compose. Uses a dedicated bridge network (`excalidash-network`) for backend↔frontend communication. Frontend also joins `npm_network` for reverse proxy access. Backend uses SQLite via named volume `excalidash_data`.
+- **Homepage + Dozzle mount `/var/run/docker.sock`**: Homepage uses it read-only (`:ro`) for auto-discovering containers; Dozzle uses it for live log streaming. Dozzle can also enable actions (stop/start) and shell access if `DOZZLE_ENABLE_ACTIONS` / `DOZZLE_ENABLE_SHELL` is set.
+- **Vaultwarden** uses SQLite by default (no external DB needed). `ADMIN_TOKEN` wajib diisi di `.env` untuk mengaktifkan admin panel (`/admin`). Set `DOMAIN` ke URL yang akan dipakai (via NPM).
+- **n8n** membutuhkan `N8N_ENCRYPTION_KEY` untuk production — generate via `openssl rand -hex 32`. `N8N_HOST` dan `WEBHOOK_URL` harus diisi dengan domain NPM.
+- **Stirling PDF** butuh memory lebih besar (512M default) untuk PDF processing. Bisa dinaikkan ke 1G atau 2G untuk file besar.
 - **Healthcheck gaps:** portainer, database/management (cloudbeaver) have NO healthcheck.
 - **Logging `max-size`:** nginx-proxy-manager is the only exception at `50m`; all others use `10m`.
 
@@ -67,7 +71,7 @@ Resource limits:
 deploy:
   resources:
     limits:
-      memory: 256M   # per-service; 9router=512M, nginx-proxy-manager=1G, supabase-db=1G
+      memory: 256M   # per-service; 9router=512M, n8n=512M, stirling-pdf=512M, nginx-proxy-manager=1G, supabase-db=1G
 ```
 
 Healthcheck:
@@ -91,11 +95,13 @@ Healthcheck:
 | 80, 443 | nginx-proxy-manager | HTTP/HTTPS proxy |
 | 81 | nginx-proxy-manager | Admin UI |
 | 2022 | sftpgo | SFTP |
+| 3000 | homepage | Dashboard landing page |
 | 3001 | Grafana | Dashboard |
 | 3306 | MySQL | Database (Docker, port exposed) |
 | 4000 | Blocky | HTTP API |
 | 5432 | PostgreSQL | Database (Docker, localhost-only) |
 | 5433 | supabase | Postgres (via Supavisor, session mode) |
+| 5678 | n8n | Workflow automation |
 | 6280 | arabold_Docs-MCP-Server | Documentation index & MCP SSE |
 | 6543 | supabase | Postgres (via Supavisor, transaction mode) |
 | 6767 | excalidash | Whiteboard UI |
@@ -104,8 +110,11 @@ Healthcheck:
 | 8081 | cAdvisor | Container metrics |
 | 8082 | IT-Tools | Web UI |
 | 8083 | sftpgo | Web Admin UI |
+| 8084 | vaultwarden | Password manager |
+| 8085 | stirling-pdf | PDF manipulation tools |
 | 8443 | SearXNG | Search engine |
 | 8444 | supabase | Kong HTTPS |
+| 8888 | dozzle | Docker log viewer |
 | 8978 | CloudBeaver | DB admin UI |
 | 9090 | Prometheus | Metrics |
 | 9100 | node_exporter | Host metrics |

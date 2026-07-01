@@ -1,0 +1,44 @@
+services:
+  stirling-pdf:
+    image: docker.stirlingpdf.com/stirlingtools/stirling-pdf:latest
+    container_name: stirling-pdf
+    restart: unless-stopped
+    networks:
+      - npm_network
+    ports:
+      - "8085:8080"
+    volumes:
+      - stirling_pdf_config:/configs
+      - stirling_pdf_logs:/logs
+    environment:
+      SYSTEM_DEFAULTLOCALE: "${SYSTEM_DEFAULTLOCALE:-id-ID}"
+      SYSTEM_MAXFILESIZE: "${SYSTEM_MAXFILESIZE:-100}"
+      UI_APPNAME: "${UI_APPNAME:-Stirling PDF}"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+networks:
+  npm_network:
+    external: true
+
+volumes:
+  stirling_pdf_config:
+  stirling_pdf_logs:
