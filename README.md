@@ -25,6 +25,7 @@ Modular Docker services for development server / VPS.
 | [nginx-proxy-manager](./networking/nginx-proxy-manager) | `80`, `81`, `443` | Reverse proxy with web UI |
 | [open-webui](./ai-automation/open-webui) | `3002` | Self-hosted AI chat interface (Ollama/OpenAI) |
 | [portainer](./management/portainer) | `9443`, `8000` | Container management UI |
+| [pastefy](./misc/pastefy) | `9999` | Feature-rich pastebin with API, OAuth & rich previews |
 | [privatebin](./misc/privatebin) | `8080` | Zero-knowledge encrypted pastebin |
 | [searxng](./misc/searxng) | `8443` | Private meta-search engine |
 | [sftpgo](./management/sftpgo) | `2022`, `8083` | SFTP server + Web UI |
@@ -38,6 +39,7 @@ Modular Docker services for development server / VPS.
 |---|---|---|---|
 | Nginx Proxy Manager | `http://<ip>:81` | `81` | Admin UI, default `admin@example.com` / `changeme` |
 | Portainer | `https://<ip>:9443` | `9443` | Container management |
+| Pastefy | `http://<ip>:9999` | `9999` | Feature-rich pastebin with API (no auth, login opsional) |
 | PrivateBin | `http://<ip>:8080` | `8080` | Zero-knowledge pastebin (no auth) |
 | 9Router | `http://<ip>:20128` | `20128` | Dashboard, login with `INITIAL_PASSWORD` |
 | Grafana | `http://<ip>:3001` | `3001` | Login via `GF_SECURITY_ADMIN_USER` in `.env` |

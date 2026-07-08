@@ -1,0 +1,97 @@
+services:
+  pastefy-db:
+    image: mariadb:10.11
+    container_name: pastefy-db
+    restart: unless-stopped
+    networks:
+      - pastefy_network
+    volumes:
+      - pastefy_db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE:-pastefy}"
+      MYSQL_USER: "${MYSQL_USER:-pastefy}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - FOWNER
+      - DAC_OVERRIDE
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  pastefy:
+    image: interaapps/pastefy:latest
+    container_name: pastefy
+    restart: unless-stopped
+    depends_on:
+      pastefy-db:
+        condition: service_healthy
+    networks:
+      - pastefy_network
+      - npm_network
+    ports:
+      - "9999:80"
+    environment:
+      HTTP_SERVER_PORT: 80
+      HTTP_SERVER_CORS: "${HTTP_SERVER_CORS:-*}"
+      DATABASE_DRIVER: mysql
+      DATABASE_NAME: "${MYSQL_DATABASE:-pastefy}"
+      DATABASE_USER: "${MYSQL_USER:-pastefy}"
+      DATABASE_PASSWORD: "${MYSQL_PASSWORD}"
+      DATABASE_HOST: pastefy-db
+      DATABASE_PORT: 3306
+      SERVER_NAME: "${SERVER_NAME:-http://localhost:9999}"
+      OAUTH2_GITHUB_CLIENT_ID: "${OAUTH2_GITHUB_CLIENT_ID:-NONE}"
+      OAUTH2_GITHUB_CLIENT_SECRET: "${OAUTH2_GITHUB_CLIENT_SECRET:-}"
+      OAUTH2_GOOGLE_CLIENT_ID: "${OAUTH2_GOOGLE_CLIENT_ID:-NONE}"
+      OAUTH2_GOOGLE_CLIENT_SECRET: "${OAUTH2_GOOGLE_CLIENT_SECRET:-}"
+      OAUTH2_DISCORD_CLIENT_ID: "${OAUTH2_DISCORD_CLIENT_ID:-NONE}"
+      OAUTH2_DISCORD_CLIENT_SECRET: "${OAUTH2_DISCORD_CLIENT_SECRET:-}"
+      OAUTH2_TWITCH_CLIENT_ID: "${OAUTH2_TWITCH_CLIENT_ID:-NONE}"
+      OAUTH2_TWITCH_CLIENT_SECRET: "${OAUTH2_TWITCH_CLIENT_SECRET:-}"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:80/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+networks:
+  pastefy_network:
+    driver: bridge
+  npm_network:
+    external: true
+
+volumes:
+  pastefy_db:
+    name: pastefy_db
