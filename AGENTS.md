@@ -12,7 +12,7 @@ cd <category>/<service-dir>
 docker compose up -d
 ```
 
-Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `misc/excalidash`, `monitoring`, `ai-automation/n8n`, `ai-automation/open-webui`, `misc/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`.
+Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `misc/excalidash`, `misc/opengist`, `monitoring`, `ai-automation/n8n`, `ai-automation/open-webui`, `misc/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`.
 
 **Category directories:**
 - `database/` → MySQL, PostgreSQL, CloudBeaver, Adminer, phpMyAdmin, Supabase
@@ -44,6 +44,7 @@ Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `mis
 - **Homepage + Dozzle mount `/var/run/docker.sock`**: Homepage uses it read-only (`:ro`) for auto-discovering containers; Dozzle uses it for live log streaming. Dozzle can also enable actions (stop/start) and shell access if `DOZZLE_ENABLE_ACTIONS` / `DOZZLE_ENABLE_SHELL` is set.
 - **cAdvisor runs with `privileged: true`** to access host disk devices for I/O metrics — the only service using full privileged mode. Its `security_opt`/`cap_drop`/`cap_add` stanzas are declared but functionally inert (negated by privileged).
 - **Vaultwarden** uses SQLite by default (no external DB needed). `ADMIN_TOKEN` wajib diisi di `.env` untuk mengaktifkan admin panel (`/admin`). Set `DOMAIN` ke URL yang akan dipakai (via NPM).
+- **OpenGist** uses SQLite by default (no external DB needed). `OG_SECRET_KEY` wajib diisi di `.env` untuk session store & enkripsi MFA. Built-in SSH server on port 2222 (git clone/pull/push).
 - **n8n** membutuhkan `N8N_ENCRYPTION_KEY` untuk production — generate via `openssl rand -hex 32`. `N8N_HOST` dan `WEBHOOK_URL` harus diisi dengan domain NPM.
 - **Stirling PDF** butuh memory lebih besar (512M default) untuk PDF processing. Bisa dinaikkan ke 1G atau 2G untuk file besar.
 - **Healthcheck gaps:** portainer, database/cloudbeaver, searxng/redis, supabase/meta (both full & minimal) have NO healthcheck.
@@ -124,6 +125,8 @@ Healthcheck:
 | 8083 | sftpgo | Web Admin UI |
 | 8084 | vaultwarden | Password manager |
 | 8085 | stirling-pdf | PDF manipulation tools |
+| 6157 | opengist | Self-hosted pastebin (Git-backed) |
+| 2222 | opengist | SSH Git access |
 | 8443 | SearXNG | Search engine |
 | 8444 | supabase | Kong HTTPS |
 | 8888 | dozzle | Docker log viewer |

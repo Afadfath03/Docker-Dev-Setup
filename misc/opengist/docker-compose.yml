@@ -1,0 +1,48 @@
+services:
+  opengist:
+    image: ghcr.io/thomiceli/opengist:1
+    container_name: opengist
+    restart: unless-stopped
+    ports:
+      - "6157:6157"
+      - "2222:2222"
+    volumes:
+      - opengist_data:/opengist
+    environment:
+      OG_EXTERNAL_URL: "${OG_EXTERNAL_URL}"
+      OG_SECRET_KEY: "${OG_SECRET_KEY}"
+      UID: "${UID:-1000}"
+      GID: "${GID:-1000}"
+    networks:
+      - opengist_network
+      - npm_network
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:6157/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+networks:
+  opengist_network:
+    driver: bridge
+  npm_network:
+    external: true
+
+volumes:
+  opengist_data:
+    name: opengist_data

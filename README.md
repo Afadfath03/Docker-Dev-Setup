@@ -23,6 +23,7 @@ Modular Docker services for development server / VPS.
 | [monitoring](./monitoring) | `9090`, `3001`, `9100`, `8081` | Prometheus + Grafana + cAdvisor |
 | [n8n](./ai-automation/n8n) | `5678` | Workflow automation (no-code) |
 | [nginx-proxy-manager](./networking/nginx-proxy-manager) | `80`, `81`, `443` | Reverse proxy with web UI |
+| [opengist](./misc/opengist) | `6157`, `2222` | Self-hosted pastebin powered by Git |
 | [open-webui](./ai-automation/open-webui) | `3002` | Self-hosted AI chat interface (Ollama/OpenAI) |
 | [portainer](./management/portainer) | `9443`, `8000` | Container management UI |
 | [pastefy](./misc/pastefy) | `9999` | Feature-rich pastebin with API, OAuth & rich previews |
@@ -56,6 +57,7 @@ Modular Docker services for development server / VPS.
 | Homepage | `http://<ip>:3000` | `3000` | Dashboard landing page (configure via `config/`) |
 | IT-Tools | `http://<ip>:8082` | `8082` | Utility tools |
 | n8n | `http://<ip>:5678` | `5678` | Workflow automation; login after setup |
+| OpenGist | `http://<ip>:6157` | `6157` | Self-hosted pastebin; register on first visit (open registration by default) |
 | Open WebUI | `http://<ip>:3002` | `3002` | AI chat interface; register on first visit |
 | Stirling PDF | `http://<ip>:8085` | `8085` | PDF tools (no auth) |
 | Docs MCP Server | `http://<ip>:6280` | `6280` | Documentation index & MCP endpoint |
