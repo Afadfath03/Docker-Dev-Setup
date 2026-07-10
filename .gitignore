@@ -28,3 +28,6 @@ backups/
 # Temp directories
 tmp/
 temp/
+
+# Pi-hole runtime data
+networking/pi-hole/etc-pihole/

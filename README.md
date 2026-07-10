@@ -23,6 +23,7 @@ Modular Docker services for development server / VPS.
 | [monitoring](./monitoring) | `9090`, `3001`, `9100`, `8081` | Prometheus + Grafana + cAdvisor |
 | [n8n](./ai-automation/n8n) | `5678` | Workflow automation (no-code) |
 | [nginx-proxy-manager](./networking/nginx-proxy-manager) | `80`, `81`, `443` | Reverse proxy with web UI |
+| [pi-hole](./networking/pi-hole) | `53`, `67`, `8089` | DNS ad-blocker (alternative to Blocky) |
 | [opengist](./misc/opengist) | `6157`, `2222` | Self-hosted pastebin powered by Git |
 | [open-webui](./ai-automation/open-webui) | `3002` | Self-hosted AI chat interface (Ollama/OpenAI) |
 | [portainer](./management/portainer) | `9443`, `8000` | Container management UI |
@@ -40,6 +41,7 @@ Modular Docker services for development server / VPS.
 |---|---|---|---|
 | Nginx Proxy Manager | `http://<ip>:81` | `81` | Admin UI, default `admin@example.com` / `changeme` |
 | Portainer | `https://<ip>:9443` | `9443` | Container management |
+| Pi-hole | `http://<ip>:8089` | `8089` | DNS ad-blocker; **stop Blocky DNS** sebelum start; login via password di `.env` |
 | Pastefy | `http://<ip>:9999` | `9999` | Feature-rich pastebin with API (no auth, login opsional) |
 | PrivateBin | `http://<ip>:8080` | `8080` | Zero-knowledge pastebin (no auth) |
 | 9Router | `http://<ip>:20128` | `20128` | Dashboard, login with `INITIAL_PASSWORD` |
@@ -107,7 +109,7 @@ docker compose pull && docker compose up -d
 - **Firewall**: use `ufw` or `iptables`, only open ports 80, 443, and 22 (SSH)
 - **Reverse Proxy**: use NPM to terminate HTTPS via Let's Encrypt, access services via domain, not IP:port
 - **Database**: PostgreSQL binds `127.0.0.1` only; change MySQL default password `admin123` for production
-- **Blocky**: port 53 must be open in the firewall for DNS to work
+- **DNS**: port `53` must be open in the firewall for DNS to work (Blocky **atau** Pi-hole, tidak bisa bersamaan)
 - **Secrets**: never commit `.env` — already in `.gitignore`
 
 ## Deploy

@@ -12,12 +12,12 @@ cd <category>/<service-dir>
 docker compose up -d
 ```
 
-Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `misc/excalidash`, `misc/opengist`, `monitoring`, `ai-automation/n8n`, `ai-automation/open-webui`, `misc/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`.
+Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `misc/excalidash`, `misc/opengist`, `monitoring`, `ai-automation/n8n`, `ai-automation/open-webui`, `misc/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`, `networking/pi-hole`.
 
 **Category directories:**
 - `database/` → MySQL, PostgreSQL, CloudBeaver, Adminer, phpMyAdmin, Supabase
 - `monitoring/` → Prometheus, Grafana, cAdvisor, node_exporter, Dozzle
-- `networking/` → Nginx Proxy Manager, Blocky DNS
+- `networking/` → Nginx Proxy Manager, Blocky DNS, Pi-hole
 - `security/` → Vaultwarden
 - `ai-automation/` → 9Router, MCP Server, n8n, Open WebUI
 - `misc/` → IT-Tools, Stirling PDF, SearXNG, ExcaliDash, Homepage
@@ -38,7 +38,7 @@ Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `mis
 - **CI deploy** (`.github/workflows/deploy.yml`) is just `git pull` via SSH on the VPS. No compose commands, no rebuild. Run those manually.
 - **Compose v2** — no compose file uses the legacy `version:` header (not needed).
 - **Portainer mounts `/var/run/docker.sock`** (needs Docker API access to manage containers).
-- **blocky_dns** is the only service needing `cap_add: [NET_ADMIN]` (raw socket for DNS on port 53).
+- **blocky_dns** and **pi-hole** both use port 53 (UDP/TCP) — they are mutually exclusive; only one can run at a time. Both need `cap_add: [NET_ADMIN]` for DNS. Pi-hole additionally needs `NET_RAW` and `SYS_NICE`.
 - **SearXNG** has two containers (`redis` + `searxng`) in one compose — one of the multi-service composes outside monitoring/supabase (see also ExcaliDash with `backend` + `frontend`).
 - **ExcaliDash** has two containers (`backend` + `frontend`) in one compose. Uses a dedicated bridge network (`excalidash_network`) for backend↔frontend communication. Frontend also joins `npm_network` for reverse proxy access. Backend uses SQLite via named volume `excalidash_data`.
 - **Homepage + Dozzle mount `/var/run/docker.sock`**: Homepage uses it read-only (`:ro`) for auto-discovering containers; Dozzle uses it for live log streaming. Dozzle can also enable actions (stop/start) and shell access if `DOZZLE_ENABLE_ACTIONS` / `DOZZLE_ENABLE_SHELL` is set.
@@ -103,7 +103,7 @@ Healthcheck:
 
 | Port | Service | Component |
 |---|---|---|
-| 53 | blocky_dns | DNS (UDP/TCP) |
+| 53 | blocky_dns / pi-hole | DNS (UDP/TCP) — mutually exclusive |
 | 80, 443 | nginx-proxy-manager | HTTP/HTTPS proxy |
 | 81 | nginx-proxy-manager | Admin UI |
 | 2022 | sftpgo | SFTP |
@@ -125,6 +125,7 @@ Healthcheck:
 | 8083 | sftpgo | Web Admin UI |
 | 8084 | vaultwarden | Password manager |
 | 8085 | stirling-pdf | PDF manipulation tools |
+| 8089 | pi-hole | Web Admin UI |
 | 6157 | opengist | Self-hosted pastebin (Git-backed) |
 | 2222 | opengist | SSH Git access |
 | 8443 | SearXNG | Search engine |
