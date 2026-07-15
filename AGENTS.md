@@ -12,14 +12,14 @@ cd <category>/<service-dir>
 docker compose up -d
 ```
 
-Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `misc/excalidash`, `misc/opengist`, `monitoring`, `ai-automation/n8n`, `ai-automation/open-webui`, `misc/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`, `networking/pi-hole`.
+Services with `.env.example`: `ai-automation/9router`, `ai-automation/omniroute`, `monitoring/dozzle`, `misc/excalidash`, `misc/opengist`, `monitoring`, `ai-automation/n8n`, `ai-automation/open-webui`, `misc/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`, `networking/pi-hole`.
 
 **Category directories:**
 - `database/` → MySQL, PostgreSQL, CloudBeaver, Adminer, phpMyAdmin, Supabase
 - `monitoring/` → Prometheus, Grafana, cAdvisor, node_exporter, Dozzle
 - `networking/` → Nginx Proxy Manager, Blocky DNS, Pi-hole
 - `security/` → Vaultwarden
-- `ai-automation/` → 9Router, MCP Server, n8n, Open WebUI
+- `ai-automation/` → 9Router, OmniRoute, MCP Server, n8n, Open WebUI
 - `misc/` → IT-Tools, Stirling PDF, SearXNG, ExcaliDash, Homepage
 - `management/` → Portainer, SFTPGo
 
@@ -35,6 +35,7 @@ Services with `.env.example`: `ai-automation/9router`, `monitoring/dozzle`, `mis
 - **`npm_network`** is external; created once (`docker network create npm_network`). Every compose that needs it declares `networks.npm_network.external: true`.
 - **`monitoring` network** is a dedicated bridge. Only Grafana also attaches to `npm_network` (for reverse proxy access).
 - **9Router mounts host home dirs:** `${HOME}:/home/user` — usage/log data lives on the host, not in named volumes. Back up `~/.9router` and `~/.9router-usage`.
+- **OmniRoute** (fork of 9Router) uses port **20130** (9Router is on 20128). Bundled Redis sidecar for rate limiter. SQLite via named volume `omniroute_data`, no host home dir mounts.
 - **CI deploy** (`.github/workflows/deploy.yml`) is just `git pull` via SSH on the VPS. No compose commands, no rebuild. Run those manually.
 - **Compose v2** — no compose file uses the legacy `version:` header (not needed).
 - **Portainer mounts `/var/run/docker.sock`** (needs Docker API access to manage containers).
@@ -138,6 +139,7 @@ Healthcheck:
 | 9100 | node_exporter | Host metrics |
 | 9443 | Portainer | HTTPS UI |
 | 20128 | 9Router | AI routing |
+| 20130 | OmniRoute | AI routing (fork 9router) |
 
 ## Per-service READMEs
 

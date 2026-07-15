@@ -13,6 +13,7 @@ Modular Docker services for development server / VPS.
 | Service | Port | Function |
 |---|---|---|
 | [9router](./ai-automation/9router) | `20128` | AI routing gateway & token saver |
+| [omniroute](./ai-automation/omniroute) | `20130` | AI routing gateway (fork 9router, 250+ providers) |
 | [blocky_dns](./networking/blocky_dns) | `53`, `4000` | DNS ad/tracker blocker |
 | [database](./database) | `3306`, `5432`, `8086`, `8087`, `8978` | MySQL, PostgreSQL, Adminer, phpMyAdmin, CloudBeaver |
 | [dozzle](./monitoring/dozzle) | `8888` | Real-time Docker log viewer |
@@ -45,6 +46,7 @@ Modular Docker services for development server / VPS.
 | Pastefy | `http://<ip>:9999` | `9999` | Feature-rich pastebin with API (no auth, login opsional) |
 | PrivateBin | `http://<ip>:8080` | `8080` | Zero-knowledge pastebin (no auth) |
 | 9Router | `http://<ip>:20128` | `20128` | Dashboard, login with `INITIAL_PASSWORD` |
+| OmniRoute | `http://<ip>:20130` | `20130` | Dashboard, login with `INITIAL_PASSWORD` |
 | Grafana | `http://<ip>:3001` | `3001` | Login via `GF_SECURITY_ADMIN_USER` in `.env` |
 | Prometheus | `http://<ip>:9090` | `9090` | Metrics (no auth) |
 | ExcaliDash | `http://<ip>:6767` | `6767` | Dashboard, register via `/api/auth/register` |

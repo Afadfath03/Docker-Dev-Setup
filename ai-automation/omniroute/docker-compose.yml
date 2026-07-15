@@ -1,0 +1,100 @@
+networks:
+  npm_network:
+    external: true
+
+services:
+  omniroute:
+    image: diegosouzapw/omniroute:latest
+    container_name: omniroute
+    restart: unless-stopped
+    stop_grace_period: 40s
+
+    networks:
+      - npm_network
+
+    ports:
+      - "${PORT:-20130}:${PORT:-20130}"
+
+    volumes:
+      - omniroute_data:/app/data
+
+    environment:
+      - DATA_DIR=/app/data
+      - PORT=${PORT:-20130}
+      - NODE_ENV=${NODE_ENV:-production}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - JWT_SECRET=${JWT_SECRET}
+      - API_KEY_SECRET=${API_KEY_SECRET}
+      - INITIAL_PASSWORD=${INITIAL_PASSWORD}
+      - OMNIROUTE_WS_BRIDGE_SECRET=${OMNIROUTE_WS_BRIDGE_SECRET}
+      - REQUIRE_API_KEY=${REQUIRE_API_KEY:-false}
+      - AUTH_COOKIE_SECURE=${AUTH_COOKIE_SECURE:-true}
+      - BASE_URL=${BASE_URL:-http://omniroute:20130}
+      - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL:-https://omniroute.example.com}
+      - OMNIROUTE_MEMORY_MB=${OMNIROUTE_MEMORY_MB:-512}
+    env_file:
+      - .env
+
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+      - SETUID
+      - SETGID
+
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
+
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 128M
+
+    healthcheck:
+      test: ["CMD", "node", "healthcheck.mjs"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  redis:
+    image: docker.io/library/redis:7-alpine
+    container_name: omniroute-redis
+    restart: unless-stopped
+
+    volumes:
+      - redis_data:/data
+
+    command: redis-server --save 60 1 --loglevel warning
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
+
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+
+volumes:
+  omniroute_data:
+    name: omniroute_data
+  redis_data:
+    name: omniroute_redis_data
