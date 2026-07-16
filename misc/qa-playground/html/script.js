@@ -88,7 +88,9 @@ if (validateForm && validateBtn) {
 // ========================
 // API DEMO
 // ========================
-const API_BASE = 'http://localhost:3003';
+const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+  ? 'http://localhost:3003'
+  : location.protocol + '//' + location.hostname + ':3003';
 
 document.getElementById('api-fetch-btn')?.addEventListener('click', fetchResource);
 document.getElementById('api-resource')?.addEventListener('change', fetchResource);

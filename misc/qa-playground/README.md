@@ -12,7 +12,6 @@ QA test playground dengan form elements lengkap, dummy data generator via Faker.
 ## Setup
 
 ```bash
-cp -n .env.example .env 2>/dev/null; true  # no secrets needed
 docker compose up -d
 ```
 
