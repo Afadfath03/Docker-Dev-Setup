@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QA Playground — Form Test & Dummy Data</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>QA Playground</h1>
+  <nav>
+    <button class="tab-btn active" data-tab="forms">Form Elements</button>
+    <button class="tab-btn" data-tab="validation">Validation</button>
+    <button class="tab-btn" data-tab="api">API Demo</button>
+    <button class="tab-btn" data-tab="dummy">Dummy Data</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ===== TAB 1: FORM ELEMENTS ===== -->
+<section id="tab-forms" class="tab-content active">
+
+  <h2>All HTML5 Input Types</h2>
+
+  <form id="form-elements" onsubmit="return false">
+
+    <!-- Text inputs -->
+    <fieldset>
+      <legend>Text Inputs</legend>
+      <label>Text <input type="text" name="text" placeholder="Text input"></label>
+      <label>Email <input type="email" name="email" placeholder="user@example.com"></label>
+      <label>Password <input type="password" name="password" placeholder="Min 8 chars"></label>
+      <label>Number <input type="number" name="number" min="0" max="100" step="1" value="50"></label>
+      <label>Telephone <input type="tel" name="tel" placeholder="+62 xxx xxxx"></label>
+      <label>URL <input type="url" name="url" placeholder="https://example.com"></label>
+      <label>Search <input type="search" name="search" placeholder="Search..."></label>
+    </fieldset>
+
+    <!-- Selection inputs -->
+    <fieldset>
+      <legend>Selection Inputs</legend>
+
+      <div class="field-row">
+        <span class="field-label">Checkboxes:</span>
+        <label class="inline"><input type="checkbox" name="check1" checked> Option A</label>
+        <label class="inline"><input type="checkbox" name="check2"> Option B</label>
+        <label class="inline"><input type="checkbox" name="check3"> Option C</label>
+        <label class="inline"><input type="checkbox" name="check-indeterminate" id="check-indeterminate"> Indeterminate</label>
+      </div>
+
+      <div class="field-row">
+        <span class="field-label">Radio Buttons:</span>
+        <label class="inline"><input type="radio" name="radio-group" value="yes" checked> Yes</label>
+        <label class="inline"><input type="radio" name="radio-group" value="no"> No</label>
+        <label class="inline"><input type="radio" name="radio-group" value="maybe"> Maybe</label>
+      </div>
+
+      <label>Select (single)
+        <select name="select-single">
+          <option value="">— Select —</option>
+          <optgroup label="Group A">
+            <option value="a1">A1</option>
+            <option value="a2">A2</option>
+          </optgroup>
+          <optgroup label="Group B">
+            <option value="b1">B1</option>
+            <option value="b2">B2</option>
+          </optgroup>
+        </select>
+      </label>
+
+      <label>Select (multiple)
+        <select name="select-multi" multiple size="4">
+          <option value="1">Item 1</option>
+          <option value="2">Item 2</option>
+          <option value="3">Item 3</option>
+          <option value="4">Item 4</option>
+        </select>
+      </label>
+
+      <label>Datalist
+        <input type="text" name="datalist" list="browsers" placeholder="Type or pick">
+        <datalist id="browsers">
+          <option value="Chrome">
+          <option value="Firefox">
+          <option value="Safari">
+          <option value="Edge">
+          <option value="Opera">
+        </datalist>
+      </label>
+    </fieldset>
+
+    <!-- Date / Time -->
+    <fieldset>
+      <legend>Date &amp; Time Inputs</legend>
+      <label>Date <input type="date" name="date"></label>
+      <label>Datetime-local <input type="datetime-local" name="datetime-local"></label>
+      <label>Month <input type="month" name="month"></label>
+      <label>Week <input type="week" name="week"></label>
+      <label>Time <input type="time" name="time"></label>
+    </fieldset>
+
+    <!-- Other inputs -->
+    <fieldset>
+      <legend>Other Inputs</legend>
+
+      <label>Color <input type="color" name="color" value="#4f46e5"></label>
+
+      <div class="field-row">
+        <span class="field-label">Range:</span>
+        <input type="range" name="range" id="range-slider" min="0" max="100" value="50">
+        <output id="range-value" for="range-slider">50</output>
+      </div>
+
+      <label>File <input type="file" name="file" multiple></label>
+
+      <label>Hidden (tidak terlihat) <input type="hidden" name="hidden" value="secret123"></label>
+    </fieldset>
+
+    <!-- Textarea -->
+    <fieldset>
+      <legend>Textarea</legend>
+      <label>Normal <textarea name="textarea" rows="3" placeholder="Write something..."></textarea></label>
+      <label>Readonly <textarea name="textarea-ro" rows="3" readonly>This text cannot be edited.</textarea></label>
+      <label>Disabled <textarea name="textarea-dis" rows="3" disabled>This textarea is disabled.</textarea></label>
+    </fieldset>
+
+    <!-- Buttons -->
+    <fieldset>
+      <legend>Buttons</legend>
+      <div class="btn-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="reset" class="btn">Reset</button>
+        <button type="button" class="btn" onclick="alert('Button clicked!')">Click me</button>
+        <button type="button" class="btn" disabled>Disabled</button>
+      </div>
+    </fieldset>
+
+    <!-- Interactive elements -->
+    <fieldset>
+      <legend>Interactive Elements</legend>
+
+      <label>Progress <progress value="65" max="100">65%</progress></label>
+      <label>Meter <meter value="0.7" min="0" max="1" low="0.3" high="0.8" optimum="0.6">70%</meter></label>
+
+      <details>
+        <summary>Click to expand</summary>
+        <p>This is hidden content inside a <code>&lt;details&gt;</code> element. Useful for testing expand/collapse behavior.</p>
+      </details>
+    </fieldset>
+
+  </form>
+</section>
+
+<!-- ===== TAB 2: VALIDATION ===== -->
+<section id="tab-validation" class="tab-content">
+
+  <h2>Form Validation Testing</h2>
+
+  <form id="form-validation" novalidate>
+    <fieldset>
+      <legend>Validation Rules</legend>
+
+      <label>Required + email pattern
+        <input type="email" name="val-email" required placeholder="Enter a valid email">
+        <span class="error-msg">Please enter a valid email address.</span>
+      </label>
+
+      <label>Minlength 5, maxlength 20
+        <input type="text" name="val-length" minlength="5" maxlength="20" placeholder="5-20 characters">
+        <span class="error-msg">Must be 5-20 characters.</span>
+      </label>
+
+      <label>Pattern: alphanumeric only
+        <input type="text" name="val-pattern" pattern="[a-zA-Z0-9]+" placeholder="Letters and numbers only" title="Alphanumeric only">
+        <span class="error-msg">Only letters and numbers allowed.</span>
+      </label>
+
+      <label>Number: min 18, max 99
+        <input type="number" name="val-number" min="18" max="99" placeholder="18-99">
+        <span class="error-msg">Must be between 18 and 99.</span>
+      </label>
+
+      <label>URL
+        <input type="url" name="val-url" placeholder="https://example.com">
+        <span class="error-msg">Please enter a valid URL.</span>
+      </label>
+
+      <label>Custom validity (JS)
+        <input type="text" name="val-custom" id="val-custom" placeholder='Type "valid" to pass'>
+        <span class="error-msg">Must equal "valid".</span>
+      </label>
+
+      <label>Password match
+        <input type="password" name="val-pass1" id="val-pass1" placeholder="Password">
+        <input type="password" name="val-pass2" id="val-pass2" placeholder="Confirm password">
+        <span class="error-msg">Passwords must match.</span>
+      </label>
+    </fieldset>
+
+    <div class="btn-group">
+      <button type="submit" class="btn btn-primary" id="validate-btn">Validate All</button>
+      <button type="reset" class="btn">Reset</button>
+    </div>
+
+    <div id="validation-summary"></div>
+  </form>
+</section>
+
+<!-- ===== TAB 3: API DEMO ===== -->
+<section id="tab-api" class="tab-content">
+
+  <h2>JSON Server API Demo</h2>
+  <p>Data dari <code>json-server</code> di port <code>3003</code>. CORS enabled.</p>
+
+  <div class="api-controls">
+    <label>Select resource:
+      <select id="api-resource">
+        <option value="users">Users</option>
+        <option value="products">Products</option>
+        <option value="orders">Orders</option>
+        <option value="posts">Posts</option>
+        <option value="categories">Categories</option>
+      </select>
+    </label>
+    <button class="btn btn-primary" id="api-fetch-btn">Fetch Data</button>
+  </div>
+
+  <div id="api-table-wrapper">
+    <table id="api-table">
+      <thead><tr><th>Loading...</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <h3>Create New Record</h3>
+  <form id="api-create-form">
+    <div id="api-create-fields"></div>
+    <button type="submit" class="btn btn-primary">POST to API</button>
+  </form>
+  <div id="api-result"></div>
+</section>
+
+<!-- ===== TAB 4: DUMMY DATA ===== -->
+<section id="tab-dummy" class="tab-content">
+
+  <h2>Dummy Data Generator</h2>
+  <p>Generate realistic dummy data untuk testing. Data bisa di-copy sebagai JSON.</p>
+
+  <div class="dummy-controls">
+    <label>Jumlah record: <input type="number" id="dummy-count" value="5" min="1" max="50"></label>
+    <div class="btn-group">
+      <button class="btn btn-primary" id="dummy-users">Generate Users</button>
+      <button class="btn btn-primary" id="dummy-products">Generate Products</button>
+      <button class="btn" id="dummy-names">Names Only</button>
+      <button class="btn" id="dummy-emails">Emails + Phones</button>
+      <button class="btn" id="dummy-addresses">Addresses</button>
+      <button class="btn" id="dummy-lorem">Lorem Ipsum</button>
+    </div>
+  </div>
+
+  <div id="dummy-output">
+    <pre><code id="dummy-result">Click a button to generate data...</code></pre>
+    <button class="btn" id="dummy-copy">Copy to Clipboard</button>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>QA Playground — <a href="http://localhost:3003" target="_blank">JSON Server API :3003</a></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@faker-js/faker@9.6.0/dist/cjs/locale/en/index.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

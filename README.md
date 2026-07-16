@@ -28,6 +28,7 @@ Modular Docker services for development server / VPS.
 | [opengist](./misc/opengist) | `6157`, `2222` | Self-hosted pastebin powered by Git |
 | [open-webui](./ai-automation/open-webui) | `3002` | Self-hosted AI chat interface (Ollama/OpenAI) |
 | [portainer](./management/portainer) | `9443`, `8000` | Container management UI |
+| [qa-playground](./misc/qa-playground) | `8088`, `3003` | QA test page + dummy data generator + mock REST API |
 | [pastefy](./misc/pastefy) | `9999` | Feature-rich pastebin with API, OAuth & rich previews |
 | [privatebin](./misc/privatebin) | `8080` | Zero-knowledge encrypted pastebin |
 | [searxng](./misc/searxng) | `8443` | Private meta-search engine |
@@ -42,6 +43,7 @@ Modular Docker services for development server / VPS.
 |---|---|---|---|
 | Nginx Proxy Manager | `http://<ip>:81` | `81` | Admin UI, default `admin@example.com` / `changeme` |
 | Portainer | `https://<ip>:9443` | `9443` | Container management |
+| QA Playground | `http://<ip>:8088` | `8088` | Form test page + dummy data generator (Faker.js); API mock via `:3003` |
 | Pi-hole | `http://<ip>:8089` | `8089` | DNS ad-blocker; **stop Blocky DNS** sebelum start; login via password di `.env` |
 | Pastefy | `http://<ip>:9999` | `9999` | Feature-rich pastebin with API (no auth, login opsional) |
 | PrivateBin | `http://<ip>:8080` | `8080` | Zero-knowledge pastebin (no auth) |

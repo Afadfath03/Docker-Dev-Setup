@@ -1,0 +1,36 @@
+{
+  "users": [
+    { "id": 1, "name": "Alice Johnson", "email": "alice@example.com", "role": "admin", "active": true, "phone": "+6281234567890" },
+    { "id": 2, "name": "Bob Smith", "email": "bob@example.com", "role": "user", "active": true, "phone": "+6281234567891" },
+    { "id": 3, "name": "Charlie Brown", "email": "charlie@example.com", "role": "editor", "active": false, "phone": "+6281234567892" },
+    { "id": 4, "name": "Diana Ross", "email": "diana@example.com", "role": "user", "active": true, "phone": "+6281234567893" },
+    { "id": 5, "name": "Eve Wilson", "email": "eve@example.com", "role": "admin", "active": false, "phone": "+6281234567894" }
+  ],
+  "products": [
+    { "id": 1, "name": "Laptop Pro", "price": 15000000, "category": "electronics", "inStock": true, "rating": 4.5 },
+    { "id": 2, "name": "Wireless Mouse", "price": 250000, "category": "accessories", "inStock": true, "rating": 4.2 },
+    { "id": 3, "name": "Mechanical Keyboard", "price": 850000, "category": "accessories", "inStock": false, "rating": 4.8 },
+    { "id": 4, "name": "27-inch Monitor", "price": 4500000, "category": "electronics", "inStock": true, "rating": 4.6 },
+    { "id": 5, "name": "USB-C Hub", "price": 350000, "category": "accessories", "inStock": true, "rating": 3.9 },
+    { "id": 6, "name": "Webcam HD", "price": 750000, "category": "electronics", "inStock": false, "rating": 4.0 }
+  ],
+  "orders": [
+    { "id": 1, "userId": 1, "productId": 1, "quantity": 1, "status": "completed", "total": 15000000 },
+    { "id": 2, "userId": 2, "productId": 2, "quantity": 2, "status": "completed", "total": 500000 },
+    { "id": 3, "userId": 3, "productId": 4, "quantity": 1, "status": "pending", "total": 4500000 },
+    { "id": 4, "userId": 1, "productId": 3, "quantity": 1, "status": "shipped", "total": 850000 },
+    { "id": 5, "userId": 4, "productId": 5, "quantity": 3, "status": "pending", "total": 1050000 }
+  ],
+  "categories": [
+    { "id": 1, "name": "Electronics", "slug": "electronics" },
+    { "id": 2, "name": "Accessories", "slug": "accessories" },
+    { "id": 3, "name": "Software", "slug": "software" }
+  ],
+  "posts": [
+    { "id": 1, "title": "Getting Started with Docker", "body": "Docker is a platform for developing, shipping, and running applications in containers.", "userId": 1 },
+    { "id": 2, "title": "JavaScript Best Practices", "body": "Follow these best practices to write clean and maintainable JavaScript code.", "userId": 2 },
+    { "id": 3, "title": "Introduction to REST APIs", "body": "REST APIs allow different systems to communicate over HTTP using standard methods.", "userId": 1 },
+    { "id": 4, "title": "CSS Grid vs Flexbox", "body": "Both CSS Grid and Flexbox are powerful layout tools. Here's when to use each.", "userId": 3 },
+    { "id": 5, "title": "Database Design Principles", "body": "Good database design ensures data integrity and query performance.", "userId": 4 }
+  ]
+}
