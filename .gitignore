@@ -31,3 +31,8 @@ temp/
 
 # Pi-hole runtime data
 networking/pi-hole/etc-pihole/
+
+# Nginx Proxy Manager runtime data & certificates
+networking/nginx-proxy-manager/data/
+networking/nginx-proxy-manager/letsencrypt/
+nginx-proxy-manager/
