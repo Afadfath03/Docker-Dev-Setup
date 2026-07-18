@@ -12,15 +12,16 @@ cd <category>/<service-dir>
 docker compose up -d
 ```
 
-Services with `.env.example`: `ai-automation/9router`, `ai-automation/omniroute`, `monitoring/dozzle`, `misc/excalidash`, `misc/opengist`, `monitoring`, `ai-automation/n8n`, `ai-automation/open-webui`, `ai-automation/vane`, `misc/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`, `networking/pi-hole`.
+Services with `.env.example`: `ai-automation/9router`, `ai-automation/omniroute`, `monitoring/dozzle`, `misc/excalidash`, `misc/opengist`, `monitoring`, `ai-automation/n8n`, `ai-automation/open-webui`, `search-engine/vane`, `search-engine/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`, `networking/pi-hole`.
 
 **Category directories:**
 - `database/` → MySQL, PostgreSQL, CloudBeaver, Adminer, phpMyAdmin, Supabase
 - `monitoring/` → Prometheus, Grafana, cAdvisor, node_exporter, Dozzle
 - `networking/` → Nginx Proxy Manager, Blocky DNS, Pi-hole
 - `security/` → Vaultwarden
-- `ai-automation/` → 9Router, OmniRoute, MCP Server, n8n, Open WebUI, Vane
-- `misc/` → IT-Tools, Stirling PDF, SearXNG, ExcaliDash, Homepage
+- `ai-automation/` → 9Router, OmniRoute, MCP Server, n8n, Open WebUI
+- `search-engine/` → SearXNG, Vane
+- `misc/` → IT-Tools, Stirling PDF, ExcaliDash, Homepage
 - `management/` → Portainer, SFTPGo
 
 **Nested compose dirs** (deeper than 1 level):

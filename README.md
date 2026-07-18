@@ -27,12 +27,12 @@ Modular Docker services for development server / VPS.
 | [pi-hole](./networking/pi-hole) | `53`, `67`, `8089` | DNS ad-blocker (alternative to Blocky) |
 | [opengist](./misc/opengist) | `6157`, `2222` | Self-hosted pastebin powered by Git |
 | [open-webui](./ai-automation/open-webui) | `3002` | Self-hosted AI chat interface (Ollama/OpenAI) |
-| [vane](./ai-automation/vane) | `3004` | Self-hosted AI answering engine (Perplexity alternative) |
+| [vane](./search-engine/vane) | `3004` | Self-hosted AI answering engine (Perplexity alternative) |
 | [portainer](./management/portainer) | `9443`, `8000` | Container management UI |
 | [qa-playground](./misc/qa-playground) | `8088`, `3003` | QA test page + dummy data generator + mock REST API |
 | [pastefy](./misc/pastefy) | `9999` | Feature-rich pastebin with API, OAuth & rich previews |
 | [privatebin](./misc/privatebin) | `8080` | Zero-knowledge encrypted pastebin |
-| [searxng](./misc/searxng) | `8443` | Private meta-search engine |
+| [searxng](./search-engine/searxng) | `8443` | Private meta-search engine |
 | [sftpgo](./management/sftpgo) | `2022`, `8083` | SFTP server + Web UI |
 | [stirling-pdf](./misc/stirling-pdf) | `8085` | PDF manipulation tools (merge, split, OCR, dll) |
 | [supabase](./database/supabase) | `8002`, `8444`, `5433`, `6543` | BaaS — full or minimal stack |
