@@ -1,0 +1,47 @@
+services:
+  vane:
+    image: itzcrazykns1337/vane:latest
+    container_name: vane
+    restart: unless-stopped
+    networks:
+      - npm_network
+    ports:
+      - "${VANE_PORT:-3004}:3000"
+    volumes:
+      - vane_data:/home/vane/data
+      - vane_uploads:/home/vane/uploads
+    environment:
+      - TZ=${TZ:-Asia/Jakarta}
+    env_file:
+      - .env
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
+networks:
+  npm_network:
+    external: true
+
+volumes:
+  vane_data:
+    name: vane_data
+  vane_uploads:
+    name: vane_uploads

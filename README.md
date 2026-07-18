@@ -27,6 +27,7 @@ Modular Docker services for development server / VPS.
 | [pi-hole](./networking/pi-hole) | `53`, `67`, `8089` | DNS ad-blocker (alternative to Blocky) |
 | [opengist](./misc/opengist) | `6157`, `2222` | Self-hosted pastebin powered by Git |
 | [open-webui](./ai-automation/open-webui) | `3002` | Self-hosted AI chat interface (Ollama/OpenAI) |
+| [vane](./ai-automation/vane) | `3004` | Self-hosted AI answering engine (Perplexity alternative) |
 | [portainer](./management/portainer) | `9443`, `8000` | Container management UI |
 | [qa-playground](./misc/qa-playground) | `8088`, `3003` | QA test page + dummy data generator + mock REST API |
 | [pastefy](./misc/pastefy) | `9999` | Feature-rich pastebin with API, OAuth & rich previews |
@@ -65,6 +66,7 @@ Modular Docker services for development server / VPS.
 | n8n | `http://<ip>:5678` | `5678` | Workflow automation; login after setup |
 | OpenGist | `http://<ip>:6157` | `6157` | Self-hosted pastebin; register on first visit (open registration by default) |
 | Open WebUI | `http://<ip>:3002` | `3002` | AI chat interface; register on first visit |
+| Vane | `http://<ip>:3004` | `3004` | AI answering engine; configure providers via setup screen |
 | Stirling PDF | `http://<ip>:8085` | `8085` | PDF tools (no auth) |
 | Docs MCP Server | `http://<ip>:6280` | `6280` | Documentation index & MCP endpoint |
 | cAdvisor | `http://<ip>:8081` | `8081` | Container metrics |

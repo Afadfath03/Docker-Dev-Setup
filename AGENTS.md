@@ -12,14 +12,14 @@ cd <category>/<service-dir>
 docker compose up -d
 ```
 
-Services with `.env.example`: `ai-automation/9router`, `ai-automation/omniroute`, `monitoring/dozzle`, `misc/excalidash`, `misc/opengist`, `monitoring`, `ai-automation/n8n`, `ai-automation/open-webui`, `misc/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`, `networking/pi-hole`.
+Services with `.env.example`: `ai-automation/9router`, `ai-automation/omniroute`, `monitoring/dozzle`, `misc/excalidash`, `misc/opengist`, `monitoring`, `ai-automation/n8n`, `ai-automation/open-webui`, `ai-automation/vane`, `misc/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`, `networking/pi-hole`.
 
 **Category directories:**
 - `database/` → MySQL, PostgreSQL, CloudBeaver, Adminer, phpMyAdmin, Supabase
 - `monitoring/` → Prometheus, Grafana, cAdvisor, node_exporter, Dozzle
 - `networking/` → Nginx Proxy Manager, Blocky DNS, Pi-hole
 - `security/` → Vaultwarden
-- `ai-automation/` → 9Router, OmniRoute, MCP Server, n8n, Open WebUI
+- `ai-automation/` → 9Router, OmniRoute, MCP Server, n8n, Open WebUI, Vane
 - `misc/` → IT-Tools, Stirling PDF, SearXNG, ExcaliDash, Homepage
 - `management/` → Portainer, SFTPGo
 
@@ -36,6 +36,7 @@ Services with `.env.example`: `ai-automation/9router`, `ai-automation/omniroute`
 - **`monitoring` network** is a dedicated bridge. Only Grafana also attaches to `npm_network` (for reverse proxy access).
 - **9Router mounts host home dirs:** `${HOME}:/home/user` — usage/log data lives on the host, not in named volumes. Back up `~/.9router` and `~/.9router-usage`.
 - **OmniRoute** (fork of 9Router) uses port **20130** (9Router is on 20128). Bundled Redis sidecar for rate limiter. SQLite via named volume `omniroute_data`, no host home dir mounts.
+- **Vane** full bundle image includes a bundled SearXNG instance; no external SearXNG container needed. Runs on port **3004**. Persists data and uploads in named volumes `vane_data` and `vane_uploads`.
 - **CI deploy** (`.github/workflows/deploy.yml`) is just `git pull` via SSH on the VPS. No compose commands, no rebuild. Run those manually.
 - **Compose v2** — no compose file uses the legacy `version:` header (not needed).
 - **Portainer mounts `/var/run/docker.sock`** (needs Docker API access to manage containers).
@@ -112,6 +113,7 @@ Healthcheck:
 | 3000 | homepage | Dashboard landing page |
 | 3001 | Grafana | Dashboard |
 | 3002 | open-webui | AI chat interface (Ollama/OpenAI) |
+| 3004 | vane | AI answering engine |
 | 3306 | MySQL | Database (Docker, port exposed) |
 | 4000 | Blocky | HTTP API |
 | 5432 | PostgreSQL | Database (Docker, localhost-only) |
