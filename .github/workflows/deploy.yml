@@ -1,8 +1,7 @@
 name: Auto Git Pull VPS
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
