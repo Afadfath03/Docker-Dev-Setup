@@ -12,12 +12,12 @@ cd <category>/<service-dir>
 docker compose up -d
 ```
 
-Services with `.env.example`: `ai-automation/9router`, `ai-automation/omniroute`, `monitoring/dozzle`, `misc/excalidash`, `misc/opengist`, `monitoring`, `ai-automation/n8n`, `ai-automation/open-webui`, `search-engine/vane`, `search-engine/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`, `networking/pi-hole`.
+Services with `.env.example`: `ai-automation/9router`, `ai-automation/omniroute`, `monitoring/dozzle`, `misc/excalidash`, `misc/opengist`, `monitoring`, `ai-automation/n8n`, `ai-automation/open-webui`, `search-engine/vane`, `search-engine/searxng`, `misc/stirling-pdf`, `database/supabase/*/`, `security/vaultwarden`, `ai-automation/model-context-protocol-server/arabold_Docs-MCP-Server/`, `networking/pi-hole`, `networking/technitium-dns`.
 
 **Category directories:**
 - `database/` → MySQL, PostgreSQL, CloudBeaver, Adminer, phpMyAdmin, Supabase
 - `monitoring/` → Prometheus, Grafana, cAdvisor, node_exporter, Dozzle
-- `networking/` → Nginx Proxy Manager, Blocky DNS, Pi-hole
+- `networking/` → Nginx Proxy Manager, Blocky DNS, Pi-hole, Technitium DNS
 - `security/` → Vaultwarden
 - `ai-automation/` → 9Router, OmniRoute, MCP Server, n8n, Open WebUI
 - `search-engine/` → SearXNG, Vane
@@ -41,7 +41,7 @@ Services with `.env.example`: `ai-automation/9router`, `ai-automation/omniroute`
 - **CI deploy** (`.github/workflows/deploy.yml`) is just `git pull` via SSH on the VPS. No compose commands, no rebuild. Run those manually.
 - **Compose v2** — no compose file uses the legacy `version:` header (not needed).
 - **Portainer mounts `/var/run/docker.sock`** (needs Docker API access to manage containers).
-- **blocky_dns** and **pi-hole** both use port 53 (UDP/TCP) — they are mutually exclusive; only one can run at a time. Both need `cap_add: [NET_ADMIN]` for DNS. Pi-hole additionally needs `NET_RAW` and `SYS_NICE`.
+- **blocky_dns**, **pi-hole**, and **technitium-dns** all use port 53 (UDP/TCP) — they are mutually exclusive; only one can run at a time. Blocky and Pi-hole need `cap_add: [NET_ADMIN]` for DNS. Pi-hole additionally needs `NET_RAW` and `SYS_NICE`. Technitium only needs `NET_BIND_SERVICE` (add `NET_RAW` only if its DHCP server is enabled). Technitium DoH (443) is left commented out — conflicts with NPM. Technitium config uses bind mount `./config` + per-folder `.gitignore` (not a named volume) so data survives `docker compose down -v`. Technitium dir also has optional `dns-watch.sh` + systemd timer to auto-toggle systemd-resolved stub on machines that alternate Technitium/resolved on port 53 — see its README.
 - **SearXNG** has two containers (`redis` + `searxng`) in one compose — one of the multi-service composes outside monitoring/supabase (see also ExcaliDash with `backend` + `frontend`).
 - **qa-playground** has **two containers** in one compose: nginx (static HTML form test page) + json-server (mock REST API). nginx serves a comprehensive form test page with all HTML5 input types + Faker.js dummy data generation via CDN. json-server provides REST API endpoints (users, products, orders, posts, categories) for API testing practice. Port 8088 for form page, 3003 for JSON Server API.
 - **ExcaliDash** has two containers (`backend` + `frontend`) in one compose. Uses a dedicated bridge network (`excalidash_network`) for backend↔frontend communication. Frontend also joins `npm_network` for reverse proxy access. Backend uses SQLite via named volume `excalidash_data`.
@@ -93,6 +93,7 @@ deploy:
 Healthcheck:
 - TCP: `["CMD-SHELL", "nc -z localhost <port> || exit 1"]`
 - HTTP: `["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:<port>/<path>"]`
+- Bash: `["CMD", "bash", "-c", "echo > /dev/tcp/127.0.0.1/<port>"]`
 - DB: `pg_isready` / `mysqladmin ping` for database services
 
 ## Adding a new service
@@ -107,7 +108,7 @@ Healthcheck:
 
 | Port | Service | Component |
 |---|---|---|
-| 53 | blocky_dns / pi-hole | DNS (UDP/TCP) — mutually exclusive |
+| 53 | blocky_dns / pi-hole / technitium-dns | DNS (UDP/TCP) — mutually exclusive |
 | 80, 443 | nginx-proxy-manager | HTTP/HTTPS proxy |
 | 81 | nginx-proxy-manager | Admin UI |
 | 2022 | sftpgo | SFTP |
@@ -131,6 +132,8 @@ Healthcheck:
 | 8084 | vaultwarden | Password manager |
 | 8085 | stirling-pdf | PDF manipulation tools |
 | 8089 | pi-hole | Web Admin UI |
+| 853 | technitium-dns | DNS-over-TLS / DNS-over-QUIC |
+| 5380 | technitium-dns | Web Admin UI |
 | 6157 | opengist | Self-hosted pastebin (Git-backed) |
 | 2222 | opengist | SSH Git access |
 | 8443 | SearXNG | Search engine |

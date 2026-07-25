@@ -25,6 +25,7 @@ Modular Docker services for development server / VPS.
 | [n8n](./ai-automation/n8n) | `5678` | Workflow automation (no-code) |
 | [nginx-proxy-manager](./networking/nginx-proxy-manager) | `80`, `81`, `443` | Reverse proxy with web UI |
 | [pi-hole](./networking/pi-hole) | `53`, `67`, `8089` | DNS ad-blocker (alternative to Blocky) |
+| [technitium-dns](./networking/technitium-dns) | `53`, `853`, `5380` | DNS server authoritative + recursive (alternative to Blocky/Pi-hole) |
 | [opengist](./misc/opengist) | `6157`, `2222` | Self-hosted pastebin powered by Git |
 | [open-webui](./ai-automation/open-webui) | `3002` | Self-hosted AI chat interface (Ollama/OpenAI) |
 | [vane](./search-engine/vane) | `3004` | Self-hosted AI answering engine (Perplexity alternative) |
@@ -46,6 +47,7 @@ Modular Docker services for development server / VPS.
 | Portainer | `https://<ip>:9443` | `9443` | Container management |
 | QA Playground | `http://<ip>:8088` | `8088` | Form test page + dummy data generator (Faker.js); API mock via `:3003` |
 | Pi-hole | `http://<ip>:8089` | `8089` | DNS ad-blocker; **stop Blocky DNS** sebelum start; login via password di `.env` |
+| Technitium DNS | `http://<ip>:5380` | `5380` | DNS server; **stop Blocky & Pi-hole** sebelum start; login user `admin` + password di `.env` |
 | Pastefy | `http://<ip>:9999` | `9999` | Feature-rich pastebin with API (no auth, login opsional) |
 | PrivateBin | `http://<ip>:8080` | `8080` | Zero-knowledge pastebin (no auth) |
 | 9Router | `http://<ip>:20128` | `20128` | Dashboard, login with `INITIAL_PASSWORD` |
@@ -115,7 +117,7 @@ docker compose pull && docker compose up -d
 - **Firewall**: use `ufw` or `iptables`, only open ports 80, 443, and 22 (SSH)
 - **Reverse Proxy**: use NPM to terminate HTTPS via Let's Encrypt, access services via domain, not IP:port
 - **Database**: PostgreSQL binds `127.0.0.1` only; change MySQL default password `admin123` for production
-- **DNS**: port `53` must be open in the firewall for DNS to work (Blocky **atau** Pi-hole, tidak bisa bersamaan)
+- **DNS**: port `53` must be open in the firewall for DNS to work (Blocky, Pi-hole, **atau** Technitium — hanya satu yang bisa jalan)
 - **Secrets**: never commit `.env` — already in `.gitignore`
 
 ## Deploy

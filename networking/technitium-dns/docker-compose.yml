@@ -1,0 +1,51 @@
+services:
+  technitium-dns:
+    image: technitium/dns-server:latest
+    container_name: technitium-dns
+    hostname: technitium-dns
+    restart: unless-stopped
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+      - "853:853/tcp"     # DNS-over-TLS
+      - "853:853/udp"     # DNS-over-QUIC
+      - "5380:5380/tcp"   # web console
+      # - "443:443/tcp"   # DNS-over-HTTPS — konflik dengan NPM, aktifkan hanya jika NPM tidak dipakai
+      # - "443:443/udp"   # DNS-over-HTTPS (HTTP/3)
+      # - "67:67/udp"     # DHCP — butuh cap_add NET_RAW
+    environment:
+      TZ: ${TZ:-Asia/Jakarta}
+      DNS_SERVER_DOMAIN: ${DNS_SERVER_DOMAIN:-technitium-dns}
+      DNS_SERVER_ADMIN_PASSWORD: ${DNS_SERVER_ADMIN_PASSWORD}
+      # DNS_SERVER_FORWARDERS: ${DNS_SERVER_FORWARDERS:-1.1.1.1,8.8.8.8}
+      DNS_SERVER_LOG_USING_LOCAL_TIME: "true"
+    volumes:
+      - ./config:/etc/dns
+    sysctls:
+      - net.ipv4.ip_local_port_range=1024 65000
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/127.0.0.1/5380"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - npm_network
+
+networks:
+  npm_network:
+    external: true

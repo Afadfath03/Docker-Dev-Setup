@@ -1,0 +1,8 @@
+[Unit]
+Description=DNS Watchdog — auto-switch Technitium DNS / systemd-resolved
+After=docker.service
+Wants=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/dns-watch.sh
