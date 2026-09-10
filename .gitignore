@@ -36,3 +36,5 @@ networking/pi-hole/etc-pihole/
 networking/nginx-proxy-manager/data/
 networking/nginx-proxy-manager/letsencrypt/
 nginx-proxy-manager/
+networking/technitium-dns/docker-compose.yml
+networking

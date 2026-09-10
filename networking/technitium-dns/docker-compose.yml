@@ -10,9 +10,9 @@ services:
       - "853:853/tcp"     # DNS-over-TLS
       - "853:853/udp"     # DNS-over-QUIC
       - "5380:5380/tcp"   # web console
-      # - "443:443/tcp"   # DNS-over-HTTPS — konflik dengan NPM, aktifkan hanya jika NPM tidak dipakai
-      # - "443:443/udp"   # DNS-over-HTTPS (HTTP/3)
-      # - "67:67/udp"     # DHCP — butuh cap_add NET_RAW
+      - "443:443/tcp"   # DNS-over-HTTPS — konflik dengan NPM, aktifkan hanya jika NPM tidak dipakai
+      - "443:443/udp"   # DNS-over-HTTPS (HTTP/3)
+      - "67:67/udp"     # DHCP — butuh cap_add NET_RAW
     environment:
       TZ: ${TZ:-Asia/Jakarta}
       DNS_SERVER_DOMAIN: ${DNS_SERVER_DOMAIN:-technitium-dns}
